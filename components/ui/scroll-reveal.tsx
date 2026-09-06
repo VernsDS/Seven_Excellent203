@@ -26,8 +26,11 @@ export function useScrollProgress<T extends HTMLElement>() {
     let raf = 0;
     let active = false;
 
+    const reduceActive = () =>
+      mq.matches && !document.documentElement.classList.contains("motion-forced");
+
     const update = () => {
-      if (mq.matches) {
+      if (reduceActive()) {
         el.style.setProperty("--p", "1");
         el.style.setProperty("--exit", "0");
         return;

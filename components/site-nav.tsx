@@ -60,39 +60,51 @@ export function SiteNav() {
             </a>
           </nav>
 
-          <button
-            type="button"
-            className="site-nav-toggle"
-            aria-expanded={open}
-            aria-controls="mobile-menu"
-            onClick={() => setOpen((o) => !o)}
-          >
-            {open ? "Tutup" : "Menu"}
-          </button>
-        </div>
+        <button
+          type="button"
+          className="site-nav-toggle"
+          aria-expanded={open}
+          aria-controls="mobile-menu"
+          aria-label={open ? "Tutup menu" : "Buka menu"}
+          onClick={() => setOpen((o) => !o)}
+        >
+          <span className={`site-nav-toggle-bar${open ? " is-open" : ""}`} />
+          <span className={`site-nav-toggle-bar${open ? " is-open" : ""}`} />
+          <span className={`site-nav-toggle-bar${open ? " is-open" : ""}`} />
+        </button>
+      </div>
 
-        {open && (
-          <nav id="mobile-menu" aria-label="Mobile" className="site-nav-mobile">
-            {LINKS.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                aria-current={pathname === l.href ? "page" : undefined}
-                onClick={() => setOpen(false)}
-              >
-                {l.label}
-              </Link>
-            ))}
-            <a
-              href={waLink()}
-              target="_blank"
-              rel="noopener noreferrer"
+      <nav
+        id="mobile-menu"
+        aria-label="Mobile"
+        className={`site-nav-mobile${open ? " is-open" : ""}`}
+        aria-hidden={!open}
+      >
+        <div className="site-nav-mobile-links">
+          {LINKS.map((l, i) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              aria-current={pathname === l.href ? "page" : undefined}
+              tabIndex={open ? 0 : -1}
+              style={{ "--i": i } as React.CSSProperties}
               onClick={() => setOpen(false)}
             >
-              {CONTACT_RAFA.label}
-            </a>
-          </nav>
-        )}
+              {l.label}
+            </Link>
+          ))}
+          <a
+            href={waLink()}
+            target="_blank"
+            rel="noopener noreferrer"
+            tabIndex={open ? 0 : -1}
+            style={{ "--i": LINKS.length } as React.CSSProperties}
+            onClick={() => setOpen(false)}
+          >
+            {CONTACT_RAFA.label}
+          </a>
+        </div>
+      </nav>
       </header>
     </>
   );

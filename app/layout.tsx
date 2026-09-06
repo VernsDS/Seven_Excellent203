@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
 import Link from "next/link";
 import { SiteNav } from "@/components/site-nav";
+import { MotionBanner } from "@/components/ui/motion-banner";
 import { CLASS_INFO } from "@/lib/students";
 import { CONTACT_RAFA, waLink } from "@/lib/contact";
 import "./globals.css";
@@ -102,6 +103,17 @@ export default function RootLayout({
       className={`${inter.variable} ${fraunces.variable} ${jetbrains.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        <noscript>
+          <style>{`
+            .hero-stack, .hero-7e, .hero-copy { transform: none; }
+            .hero-copy { opacity: 1; }
+            .class-identity-logo, .class-identity-title,
+            .class-identity-sub, .class-identity-copy {
+              transform: none;
+              opacity: 1;
+            }
+          `}</style>
+        </noscript>
         <a
           href="#main"
           className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-accent focus:px-4 focus:py-2 focus:text-accent-ink"
@@ -109,6 +121,7 @@ export default function RootLayout({
           Skip to content
         </a>
         <SiteNav />
+        <MotionBanner />
         <main id="main" className="flex-1">
           {children}
         </main>
