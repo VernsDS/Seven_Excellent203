@@ -3,11 +3,11 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Gallery",
   description:
-    "Class memories of 7E Seven Excellent — real, authorized photographs only.",
+    "Class memories of 7E Seven Excellent - real, authorized photographs only.",
 };
 
 /**
- * Intentional placeholders — per docs/PRD.md and README.md:
+ * Intentional placeholders - per docs/PRD.md and README.md:
  * no fake memories, no random stock people. Real photographs are
  * added only when authorized assets land in public/images/gallery/.
  */
@@ -29,7 +29,7 @@ export default function GalleryPage() {
       </h1>
       <p className="mt-4 max-w-lg text-muted">
         The gallery opens with authorized class photographs only. Until then,
-        each frame holds its place — intentionally, not decoratively.
+        each frame holds its place - intentionally, not decoratively.
       </p>
 
       <div className="mt-12 columns-2 gap-4 md:columns-3 [&>*]:mb-4">

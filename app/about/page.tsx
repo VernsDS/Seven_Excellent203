@@ -4,7 +4,7 @@ import { CLASS_INFO } from "@/lib/students";
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Who Seven Excellent is — Class 7E, SMPN 203 Jakarta, 36 students led by Class President Maulana Aliffian.",
+    "Who Seven Excellent is - Class 7E, SMPN 203 Jakarta, 36 students led by Class President Maulana Aliffian.",
 };
 
 export default function AboutPage() {
@@ -19,7 +19,7 @@ export default function AboutPage() {
         <div className="space-y-6 text-lg leading-relaxed text-muted">
           <p>
             <span className="text-foreground">Seven Excellent</span> is Class 7E
-            of {CLASS_INFO.school} — 36 students who share one room, one
+            of {CLASS_INFO.school} - 36 students who share one room, one
             timetable, and one archive. The name is the standard: everything we
             put out carries the class identity with it.
           </p>
@@ -27,12 +27,12 @@ export default function AboutPage() {
             This website is the class&rsquo;s official digital home. It keeps
             the directory of every student by absent number, preserves class
             memories in the gallery, and publishes the weekly schedule. No
-            feeds, no algorithms — just the class, archived properly.
+            feeds, no algorithms - just the class, archived properly.
           </p>
           <p>
             The roster is authoritative and complete: absent numbers 01 through
             36, exactly as recorded by the class. Photos are added only when
-            authorized assets exist — nothing is invented.
+            authorized assets exist - nothing is invented.
           </p>
         </div>
 
@@ -41,7 +41,7 @@ export default function AboutPage() {
           <dl className="mt-6 space-y-4 text-sm">
             <div className="flex justify-between border-b border-line pb-3">
               <dt className="text-muted">Class</dt>
-              <dd className="font-medium">7E — Seven Excellent</dd>
+              <dd className="font-medium">7E - Seven Excellent</dd>
             </div>
             <div className="flex justify-between border-b border-line pb-3">
               <dt className="text-muted">School</dt>

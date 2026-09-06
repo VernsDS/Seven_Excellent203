@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useScrollProgress } from "@/components/ui/scroll-reveal";
 
 /**
- * Class identity — scroll-linked editorial composition. The logo travels
+ * Class identity - scroll-linked editorial composition. The logo travels
  * from far left with depth rotation as the section scrolls through the
  * viewport (--p 0→1); headline, subline and supporting copy follow with
  * staggered windows. Pure CSS consumes the progress variable.
@@ -32,7 +32,7 @@ export function ClassIdentity() {
           <p className="class-identity-sub">7E · SMPN 203 Jakarta</p>
           <p className="class-identity-copy">
             36 murid, satu ruang kelas, dan satu arsip yang menjaga setiap
-            jejak tahun ajaran ini — dibuat agar kenangan 7E tetap bisa
+            jejak tahun ajaran ini - dibuat agar kenangan 7E tetap bisa
             dibuka kembali kapan saja.
           </p>
         </div>

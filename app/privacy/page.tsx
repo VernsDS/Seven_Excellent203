@@ -21,7 +21,7 @@ export default function PrivacyPage() {
             This website publishes the names and absent numbers of Class 7E
             students of {CLASS_INFO.school}, and the name of the homeroom
             teacher. It does not publish addresses, contact details, birth
-            dates, grades, or photographs — photographs are added only when
+            dates, grades, or photographs - photographs are added only when
             authorized assets are supplied.
           </p>
         </section>

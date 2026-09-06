@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { CONTACT_RAFA, waLink } from "@/lib/contact";
 
 const LINKS = [
   { href: "/students", label: "Students" },
@@ -13,61 +14,86 @@ const LINKS = [
 
 export function SiteNav() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => setScrolled(!entry.isIntersecting),
+      {},
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <header className="site-nav">
-      <div className="container-page site-nav-inner">
-        <Link href="/" className="site-nav-brand">
-          <span className="display">7E</span>
-          <span>Seven Excellent</span>
-        </Link>
-
-        <nav aria-label="Primary" className="site-nav-links">
-          {LINKS.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              aria-current={pathname === l.href ? "page" : undefined}
-              className={pathname === l.href ? "is-current" : undefined}
-            >
-              {l.label}
-            </Link>
-          ))}
-          <Link href="/students/17" className="btn btn-primary site-nav-cta">
-            Ketua kelas
+    <>
+      <div ref={sentinelRef} aria-hidden="true" className="h-px w-full" />
+      <header className={`site-nav${scrolled ? " is-scrolled" : ""}`}>
+        <div className="container-page site-nav-inner">
+          <Link href="/" className="site-nav-brand">
+            <span className="display">7E</span>
+            <span>Seven Excellent</span>
           </Link>
-        </nav>
 
-        <button
-          type="button"
-          className="site-nav-toggle"
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          onClick={() => setOpen((o) => !o)}
-        >
-          {open ? "Tutup" : "Menu"}
-        </button>
-      </div>
+          <nav aria-label="Primary" className="site-nav-links">
+            {LINKS.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                aria-current={pathname === l.href ? "page" : undefined}
+                className={pathname === l.href ? "is-current" : undefined}
+              >
+                {l.label}
+              </Link>
+            ))}
+            <a
+              href={waLink()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-primary site-nav-cta"
+            >
+              {CONTACT_RAFA.label}
+            </a>
+          </nav>
 
-      {open && (
-        <nav
-          id="mobile-menu"
-          aria-label="Mobile"
-          className="site-nav-mobile"
-        >
-          {LINKS.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              aria-current={pathname === l.href ? "page" : undefined}
+          <button
+            type="button"
+            className="site-nav-toggle"
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            onClick={() => setOpen((o) => !o)}
+          >
+            {open ? "Tutup" : "Menu"}
+          </button>
+        </div>
+
+        {open && (
+          <nav id="mobile-menu" aria-label="Mobile" className="site-nav-mobile">
+            {LINKS.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                aria-current={pathname === l.href ? "page" : undefined}
+                onClick={() => setOpen(false)}
+              >
+                {l.label}
+              </Link>
+            ))}
+            <a
+              href={waLink()}
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => setOpen(false)}
             >
-              {l.label}
-            </Link>
-          ))}
-        </nav>
-      )}
-    </header>
+              {CONTACT_RAFA.label}
+            </a>
+          </nav>
+        )}
+      </header>
+    </>
   );
 }

@@ -5,7 +5,7 @@ import { president, STUDENTS } from "@/lib/students";
 export const metadata: Metadata = {
   title: "Students",
   description:
-    "The full directory of Class 7E / Seven Excellent — 36 students with authoritative absent numbers 01–36.",
+    "The full directory of Class 7E / Seven Excellent - 36 students with authoritative absent numbers 01–36.",
 };
 
 export default function StudentsPage() {

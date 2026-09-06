@@ -65,7 +65,7 @@ export default async function StudentPage({ params }: StudentPageProps) {
             </div>
             <div className="flex justify-between border-b border-line pb-3">
               <dt className="text-muted">Class</dt>
-              <dd className="font-medium">7E — Seven Excellent</dd>
+              <dd className="font-medium">7E - Seven Excellent</dd>
             </div>
             <div className="flex justify-between border-b border-line pb-3">
               <dt className="text-muted">School</dt>

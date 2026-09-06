@@ -142,7 +142,7 @@ input:focus-visible {
 }
 
 .rise {
-  animation: rise 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: rise 700ms cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 
 .rise-1 { animation-delay: 80ms; }
@@ -156,17 +156,31 @@ input:focus-visible {
   position: sticky;
   top: 0;
   z-index: 50;
-  border-bottom: 1px solid var(--line);
-  background: rgb(16 16 19 / 0.88);
-  backdrop-filter: blur(10px);
+  border-bottom: 1px solid transparent;
+  background: transparent;
+  transition: background-color 320ms ease, border-color 320ms ease,
+    box-shadow 320ms ease;
+}
+
+.site-nav.is-scrolled {
+  border-bottom-color: var(--line);
+  background: rgb(16 16 19 / 0.9);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 12px 40px rgb(0 0 0 / 0.35);
 }
 
 .site-nav-inner {
   display: flex;
-  height: 4rem;
+  height: 5rem;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  transition: height 320ms ease;
+}
+
+.site-nav.is-scrolled .site-nav-inner {
+  height: 3.75rem;
 }
 
 .site-nav-brand {
@@ -251,6 +265,9 @@ input:focus-visible {
 
 .hero {
   overflow: clip;
+  --p: 0;
+  --exit: 0;
+  /* exit-driven: identical behavior on every device height */
 }
 
 .hero-inner {
@@ -275,6 +292,8 @@ input:focus-visible {
   position: relative;
   margin-top: 1.5rem;
   line-height: 0.86;
+  transform: translateY(calc(var(--exit) * -0.28px));
+  will-change: transform;
 }
 
 .hero-7e {
@@ -286,6 +305,8 @@ input:focus-visible {
   color: transparent;
   -webkit-text-stroke: 1.5px rgb(228 179 74 / 0.75);
   margin-left: -0.04em;
+  transform: translateY(calc(var(--exit) * -0.12px)) scale(calc(1 - var(--exit) * 0.00006));
+  transform-origin: left bottom;
 }
 
 .hero-word {
@@ -307,6 +328,7 @@ input:focus-visible {
   font-size: 1.05rem;
   line-height: 1.65;
   color: var(--muted);
+  opacity: calc(1 - var(--exit) * 0.0011);
 }
 
 .hero-cta {
@@ -471,6 +493,26 @@ input:focus-visible {
   }
   .class-identity-logo {
     will-change: auto;
+  }
+}
+
+/* Without JavaScript the scroll engine never runs; keep every
+   scroll-choreographed element in its final, visible state. */
+@noscript {
+  .hero-stack,
+  .hero-7e,
+  .hero-copy {
+    transform: none;
+  }
+  .hero-copy {
+    opacity: 1;
+  }
+  .class-identity-logo,
+  .class-identity-title,
+  .class-identity-sub,
+  .class-identity-copy {
+    transform: none;
+    opacity: 1;
   }
 }
 
@@ -738,13 +780,14 @@ input:focus-visible {
 .gallery-preview {
   margin-top: 3rem;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
   gap: 1rem;
 }
 
 @media (min-width: 768px) {
   .gallery-preview {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.5rem;
   }
 }
@@ -780,7 +823,7 @@ input:focus-visible {
 .schedule-preview {
   margin-top: 3rem;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1px;
   background: var(--line);
   border: 1px solid var(--line);
@@ -788,7 +831,7 @@ input:focus-visible {
 
 @media (min-width: 768px) {
   .schedule-preview {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
 }
 
@@ -881,6 +924,299 @@ input:focus-visible {
 
 .final-cta .hero-cta {
   justify-content: center;
+}
+
+/* ---- student photo stream: perspective corridor ---- */
+
+.stream {
+  margin-top: 3.5rem;
+  padding-bottom: 3rem;
+}
+
+.stream-corridor {
+  position: relative;
+  height: clamp(22rem, 55vw, 34rem);
+  perspective: 1100px;
+  overflow: clip;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 14%,
+    black 82%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 14%,
+    black 82%,
+    transparent
+  );
+}
+
+.stream-rail {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max-content;
+  display: flex;
+  gap: 1.25rem;
+  transform-style: preserve-3d;
+}
+
+.stream-rail--a {
+  transform: translateX(-50%) translateY(-62%) rotateX(14deg) rotateY(-16deg)
+    translateZ(-40px);
+  animation: stream-drift-a 46s linear infinite;
+}
+
+.stream-rail--b {
+  transform: translateX(-50%) translateY(58%) rotateX(10deg) rotateY(18deg)
+    translateZ(-120px);
+  animation: stream-drift-b 58s linear infinite;
+}
+
+.stream-track {
+  display: flex;
+  gap: 1.25rem;
+  animation: stream-slide 46s linear infinite;
+  will-change: transform;
+}
+
+.stream-rail--b .stream-track {
+  animation-name: stream-slide-reverse;
+  animation-duration: 58s;
+}
+
+.stream-copy {
+  display: flex;
+  gap: 1.25rem;
+}
+
+/* One track per rail holds two identical copies; sliding by exactly one
+   copy width (-50% - half the boundary gap) makes the loop seamless. */
+@keyframes stream-slide {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(calc(-50% - 0.625rem), 0, 0); }
+}
+
+@keyframes stream-slide-reverse {
+  from { transform: translate3d(calc(-50% - 0.625rem), 0, 0); }
+  to { transform: translate3d(0, 0, 0); }
+}
+
+@keyframes stream-drift-a {
+  from { transform: translateX(-50%) translateY(-62%) rotateX(14deg) rotateY(-16deg) translateZ(-40px); }
+  50% { transform: translateX(-50%) translateY(-52%) rotateX(10deg) rotateY(-12deg) translateZ(60px); }
+  to { transform: translateX(-50%) translateY(-62%) rotateX(14deg) rotateY(-16deg) translateZ(-40px); }
+}
+
+@keyframes stream-drift-b {
+  from { transform: translateX(-50%) translateY(58%) rotateX(10deg) rotateY(18deg) translateZ(-120px); }
+  50% { transform: translateX(-50%) translateY(66%) rotateX(14deg) rotateY(14deg) translateZ(-20px); }
+  to { transform: translateX(-50%) translateY(58%) rotateX(10deg) rotateY(18deg) translateZ(-120px); }
+}
+
+.stream-card {
+  width: 12rem;
+  flex-shrink: 0;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .stream-card {
+    width: 14.5rem;
+  }
+}
+
+.stream-card-photo {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface-raised);
+  box-shadow: 0 24px 60px rgb(0 0 0 / 0.45);
+}
+
+.stream-card-photo img {
+  object-fit: cover;
+}
+
+.stream-card-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgb(16 16 19 / 0.72), transparent 46%);
+}
+
+.stream-placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 0.45rem;
+  text-align: center;
+  padding: 1rem;
+  background: linear-gradient(160deg, rgb(228 179 74 / 0.08), transparent 55%),
+    var(--surface);
+}
+
+.stream-placeholder-kicker,
+.stream-placeholder-label {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.stream-placeholder-no {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: 2.8rem;
+  color: var(--line);
+}
+
+.stream-card-caption {
+  display: block;
+  padding: 0.7rem 0.2rem 0;
+}
+
+.stream-card-name {
+  display: block;
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: 0.95rem;
+  line-height: 1.2;
+}
+
+.stream-card-meta {
+  display: block;
+  margin-top: 0.15rem;
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.stream-card-brand {
+  display: block;
+  margin-top: 0.1rem;
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+
+.stream-note {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.stream-note-link {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.stream-note-link:hover {
+  color: var(--accent-strong);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stream-rail,
+  .stream-track {
+    animation: none;
+  }
+}
+
+/* ---- footer ---- */
+
+.site-footer {
+  margin-top: auto;
+  border-top: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.site-footer-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding-block: 3rem;
+}
+
+@media (min-width: 768px) {
+  .site-footer-inner {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+}
+
+.site-footer-brand {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.site-footer-brand .display {
+  font-size: 2rem;
+}
+
+.site-footer-name {
+  font-weight: 700;
+}
+
+.site-footer-school {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 0.25rem;
+}
+
+.site-footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  font-size: 0.9rem;
+}
+
+.site-footer-nav a {
+  color: var(--muted);
+}
+
+.site-footer-nav a:hover {
+  color: var(--foreground);
+}
+
+.site-footer-contact {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.site-footer-legal {
+  display: flex;
+  gap: 1.25rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.site-footer-legal a:hover {
+  color: var(--foreground);
+}
+
+.site-footer-base {
+  padding-block: 1.25rem 2rem;
+  border-top: 1px solid var(--line);
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
 }
 
 /* ---- legacy: archive rows (students page) ---- */

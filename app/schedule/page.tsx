@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 };
 
 /**
- * No timetable data has been supplied yet — per docs/PRD.md:
+ * No timetable data has been supplied yet - per docs/PRD.md:
  * "Only show teacher/room/time fields when real data exists."
  * Replace this placeholder once the real weekly schedule is provided.
  */
@@ -32,7 +32,7 @@ export default function SchedulePage() {
             className="border border-line bg-surface p-5 text-center"
           >
             <p className="eyebrow">{day}</p>
-            <p className="display mt-6 text-2xl text-muted">—</p>
+            <p className="display mt-6 text-2xl text-muted">-</p>
             <p className="mt-4 text-xs text-muted">Timetable pending</p>
           </div>
         ))}

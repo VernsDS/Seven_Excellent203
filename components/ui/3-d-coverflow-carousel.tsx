@@ -6,7 +6,7 @@ import { useCallback, useRef, useState } from "react";
 import type { Student } from "@/lib/students";
 
 /**
- * 3D coverflow student archive — photo-led digital yearbook. Active
+ * 3D coverflow student archive - photo-led digital yearbook. Active
  * portrait is the focal point; neighbors recede in perspective. Card
  * transforms derive from two CSS vars (--o offset, --d depth) so all
  * responsiveness lives in CSS. No photo = designed placeholder, never
@@ -51,7 +51,7 @@ export function StudentCoverflow({ students }: { students: Student[] }) {
       <div
         role="group"
         aria-roledescription="carousel"
-        aria-label={`Arsip siswa 7E — siswa ${active + 1} dari ${students.length}`}
+        aria-label={`Arsip siswa 7E - siswa ${active + 1} dari ${students.length}`}
         tabIndex={0}
         onKeyDown={onKeyDown}
         onPointerDown={onPointerDown}

@@ -9,7 +9,7 @@ export interface Student {
 }
 
 /**
- * Authoritative roster — source: docs/OPENCODE-PROMPT.md section 4.
+ * Authoritative roster - source: docs/OPENCODE-PROMPT.md section 4.
  * Never invent student details. Photos intentionally absent until
  * authorized assets are supplied (see README.md "Assets").
  */

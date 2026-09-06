@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CLASS_INFO, STUDENTS } from "@/lib/students";
 import { president } from "@/lib/students";
+import { CONTACT_RAFA, waLink } from "@/lib/contact";
 
 export function GalleryPreview() {
   const frames = [
@@ -18,7 +19,7 @@ export function GalleryPreview() {
         <div className="section-head">
           <h2 className="display section-title">Kenangan yang menunggu.</h2>
           <p className="section-sub">
-            Galeri 7E dibuka hanya dengan foto kelas yang sah — bukan foto
+            Galeri 7E dibuka hanya dengan foto kelas yang sah - bukan foto
             stok, bukan ingatan palsu. Setiap bingkai menunggu giliran aslinya.
           </p>
           <Link href="/gallery" className="section-link">
@@ -52,7 +53,7 @@ export function SchedulePreview() {
         <div className="section-head">
           <h2 className="display section-title">Minggu 7E, jam demi jam.</h2>
           <p className="section-sub">
-            Jadwal lengkap tampil hanya setelah data asli dirilis — sesuai
+            Jadwal lengkap tampil hanya setelah data asli dirilis - sesuai
             aturan kelas, tidak ada yang ditampilkan setengah jadi.
           </p>
           <Link href="/schedule" className="section-link">
@@ -64,7 +65,7 @@ export function SchedulePreview() {
             <div key={day} className="schedule-day">
               <span className="schedule-day-name">{day}</span>
               <span className="schedule-day-mark" aria-hidden="true">
-                —
+                -
               </span>
             </div>
           ))}
@@ -85,7 +86,7 @@ export function AboutPreview() {
             Nama itu standar, bukan hiasan.
           </h2>
           <p className="section-sub">
-            Seven Excellent adalah kelas 7E di {CLASS_INFO.school} — 36 murid
+            Seven Excellent adalah kelas 7E di {CLASS_INFO.school} - 36 murid
             dengan nomor absen 01 sampai 36, dipandu wali kelas{" "}
             {CLASS_INFO.teacher}. Nama kelas kami pegang sebagai standar kerja:
             apa pun yang keluar dari 7E, keluar dengan identitas itu.
@@ -97,7 +98,7 @@ export function AboutPreview() {
         <dl className="about-facts">
           <div>
             <dt>Kelas</dt>
-            <dd>7E — Seven Excellent</dd>
+            <dd>7E - Seven Excellent</dd>
           </div>
           <div>
             <dt>Sekolah</dt>
@@ -137,6 +138,14 @@ export function FinalCta() {
           <Link href="/students" className="btn btn-primary">
             Buka arsip kelas
           </Link>
+          <a
+            href={waLink()}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-ghost"
+          >
+            {CONTACT_RAFA.label}
+          </a>
         </div>
       </div>
     </section>
