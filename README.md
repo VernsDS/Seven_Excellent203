@@ -1,33 +1,36 @@
-# Seven Excellent — Official Class Website
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-Official website for Class 7E / Seven Excellent, SMPN 203 Jakarta.
+## Getting Started
 
-## Source of truth
+First, run the development server:
 
-1. `docs/PRD.md` — product requirements
-2. `docs/DESIGN.md` — visual direction
-3. `docs/OPENCODE-PROMPT.md` — implementation instructions
-4. `.opencode/AGENTS.md` — OpenCode project rules
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-## Class data
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-- Class: 7E / Seven Excellent
-- School: SMPN 203 Jakarta
-- Students: 36
-- Class President: Maulana Aliffian (#17)
-- Homeroom Teacher: Yohanes Christian
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-## Domain
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-`https://sevenexcellent203.zone.id`
+## Learn More
 
-## Assets
+To learn more about Next.js, take a look at the following resources:
 
-Student and gallery photos are intentionally not included yet. Add authorized assets under:
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-- `public/images/students/`
-- `public/images/gallery/`
-- `public/images/branding/`
-- `public/og/`
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-Do not invent student information, achievements, events, or photographs.
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

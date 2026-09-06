@@ -1,0 +1,543 @@
+@import "tailwindcss";
+
+/*
+ * Seven Excellent design tokens — per docs/DESIGN.md
+ * Near-black foundation, graphite surfaces, one identity accent.
+ * Typography: one display family (Fraunces), one body family (Inter).
+ */
+:root {
+  --background: #101013;
+  --foreground: #f4f3ef;
+  --surface: #17171b;
+  --surface-raised: #1d1d22;
+  --line: #2a2a31;
+  --muted: #a3a19b;
+  --accent: #e4b34a;
+  --accent-strong: #f0c96a;
+  --accent-ink: #16130a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-line: var(--line);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-ink: var(--accent-ink);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-fraunces);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+/* ---- shared primitives ---- */
+
+.container-page {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 76rem;
+  padding-inline: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .container-page {
+    padding-inline: 2rem;
+  }
+}
+
+.eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.display {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-weight: 560;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+}
+
+.text-balance-h {
+  text-wrap: balance;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.7rem 1.4rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease, transform 200ms ease;
+}
+
+.btn:focus-visible,
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.btn-primary:hover {
+  background: var(--accent-strong);
+}
+
+.btn-ghost {
+  border: 1px solid var(--line);
+  color: var(--foreground);
+  background: transparent;
+}
+
+.btn-ghost:hover {
+  border-color: var(--muted);
+}
+
+/* ---- hero 3D emblem (pure CSS, no JS) ---- */
+
+.emblem-scene {
+  perspective: 900px;
+}
+
+.emblem {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  transform-style: preserve-3d;
+  animation: emblem-spin 26s linear infinite;
+}
+
+.emblem-face {
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(135deg, rgb(228 179 74 / 0.12), transparent 55%),
+    var(--surface);
+  display: grid;
+  place-items: center;
+}
+
+.emblem-face span {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: clamp(4rem, 12vw, 7rem);
+  color: var(--accent);
+  line-height: 1;
+}
+
+.emblem-face--front { transform: translateZ(90px); }
+.emblem-face--back { transform: rotateY(180deg) translateZ(90px); }
+.emblem-face--right { transform: rotateY(90deg) translateZ(90px); }
+.emblem-face--left { transform: rotateY(-90deg) translateZ(90px); }
+.emblem-face--top { transform: rotateX(90deg) translateZ(90px); border-style: dashed; }
+.emblem-face--bottom { transform: rotateX(-90deg) translateZ(90px); border-style: dashed; }
+
+@keyframes emblem-spin {
+  from { transform: rotateX(-12deg) rotateY(0deg); }
+  to { transform: rotateX(-12deg) rotateY(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .emblem {
+    animation: none;
+    transform: rotateX(-12deg) rotateY(-24deg);
+  }
+}
+
+/* ---- reveal on load ---- */
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.rise {
+  animation: rise 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.rise-1 { animation-delay: 60ms; }
+.rise-2 { animation-delay: 140ms; }
+.rise-3 { animation-delay: 220ms; }
+.rise-4 { animation-delay: 300ms; }
+
+/* ---- directory archive grid ---- */
+
+.archive-row {
+  display: grid;
+  grid-template-columns: 3.5rem 1fr auto;
+  align-items: baseline;
+  gap: 1rem;
+  padding-block: 0.9rem;
+  border-bottom: 1px solid var(--line);
+  transition: background-color 160ms ease, padding-left 160ms ease;
+}
+
+.archive-row:hover {
+  background: var(--surface);
+  padding-left: 0.5rem;
+}
+
+.archive-no {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: 1.05rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- 3D coverflow student showcase ---- */
+
+.coverflow {
+  margin-top: 3.5rem;
+}
+
+.coverflow-stage {
+  position: relative;
+  height: calc(var(--cw) * 1.5 + 2rem);
+  perspective: 1400px;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  overflow: clip;
+  cursor: grab;
+}
+
+.coverflow-stage:active {
+  cursor: grabbing;
+}
+
+.coverflow-stage:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 6px;
+}
+
+/* Per spec §9: smaller shift on mobile keeps neighbor cards tight around the active card. */
+.coverflow-stage {
+  --cw: 15rem;
+  --shift: 9.5rem;
+}
+
+@media (min-width: 640px) {
+  .coverflow-stage {
+    --cw: 17rem;
+    --shift: 12rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .coverflow-stage {
+    --cw: 20rem;
+    --shift: 14.5rem;
+  }
+}
+
+.coverflow-card {
+  position: absolute;
+  left: 50%;
+  top: 1rem;
+  width: var(--cw);
+  margin-left: calc(var(--cw) / -2);
+  transform-style: preserve-3d;
+  transform: translateX(calc(var(--o) * var(--shift)))
+    translateZ(calc(var(--d) * -13rem))
+    rotateY(calc(var(--o) * -32deg))
+    scale(calc(1 - var(--d) * 0.14));
+  filter: brightness(calc(1 - var(--d) * 0.3));
+  background: var(--surface-raised);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0.6rem 0.6rem 1rem;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 620ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 420ms ease, opacity 380ms ease;
+  transition-delay: 40ms;
+}
+
+.coverflow-card.is-active {
+  border-color: var(--muted);
+  box-shadow: 0 24px 60px rgb(0 0 0 / 0.45);
+  transition-delay: 0ms;
+}
+
+.coverflow-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.coverflow-card-photo {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.coverflow-card-photo img {
+  object-fit: cover;
+}
+
+.coverflow-card-mark {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: 0.8rem;
+  color: var(--accent);
+  background: rgb(16 16 19 / 0.82);
+  padding: 0.2rem 0.45rem;
+  line-height: 1;
+}
+
+.coverflow-placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  gap: 0.4rem;
+  background: linear-gradient(160deg, rgb(228 179 74 / 0.07), transparent 55%),
+    var(--surface);
+}
+
+.coverflow-placeholder-no {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: 2.6rem;
+  color: var(--line);
+}
+
+.coverflow-placeholder-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.coverflow-card-name {
+  display: block;
+  margin-top: 0.8rem;
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: 1.15rem;
+  line-height: 1.15;
+  color: var(--foreground);
+}
+
+.coverflow-card-meta {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.coverflow-caption {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.coverflow-caption-name {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: 1.5rem;
+}
+
+.coverflow-caption-meta {
+  margin-top: 0.2rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.coverflow-caption-note {
+  margin-top: 0.6rem;
+  max-width: 42ch;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.coverflow-caption-cta {
+  flex-shrink: 0;
+}
+
+.coverflow-controls {
+  margin-top: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+}
+
+.coverflow-arrow {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 9999px;
+  border: 1px solid var(--line);
+  color: var(--foreground);
+  background: transparent;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 180ms ease, background-color 180ms ease;
+}
+
+.coverflow-arrow:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.coverflow-dots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+  max-width: 24rem;
+}
+
+.coverflow-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 9999px;
+  border: none;
+  padding: 0;
+  background: var(--line);
+  cursor: pointer;
+  transition: background-color 240ms ease, transform 240ms ease;
+}
+
+.coverflow-dot.is-active {
+  background: var(--accent);
+  transform: scale(1.35);
+}
+
+.coverflow-dot:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---- scroll-triggered class identity ---- */
+
+.class-identity {
+  border-block: 1px solid var(--line);
+  background: var(--surface);
+  perspective: 1200px;
+}
+
+.class-identity-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  padding-block: 4.5rem;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .class-identity-inner {
+    flex-direction: row;
+    justify-content: center;
+    text-align: left;
+    gap: 4rem;
+  }
+}
+
+.class-identity-logo {
+  transform: translateX(-6rem) translateZ(-80px) rotateY(28deg);
+  opacity: 0;
+  transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 700ms ease;
+}
+
+.class-identity-logo-img {
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+.class-identity-text {
+  opacity: 0;
+  transform: translateY(1.25rem);
+  transition: transform 800ms cubic-bezier(0.22, 1, 0.36, 1) 220ms,
+    opacity 800ms ease 220ms;
+}
+
+.class-identity.is-visible .class-identity-logo {
+  transform: translateX(0) translateZ(0) rotateY(0deg);
+  opacity: 1;
+}
+
+.class-identity.is-visible .class-identity-text {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.class-identity-sub {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.class-identity-copy {
+  margin-top: 1.25rem;
+  max-width: 44ch;
+  color: var(--muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .coverflow-card,
+  .class-identity-logo,
+  .class-identity-text {
+    transition: none;
+  }
+  .class-identity-logo,
+  .class-identity-text {
+    opacity: 1;
+    transform: none;
+  }
+  .coverflow-stage {
+    cursor: default;
+  }
+}
