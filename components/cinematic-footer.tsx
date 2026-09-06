@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motionForced, prefersReducedMotion } from "@/lib/motion";
+import { GitFork } from "lucide-react";
 import { CONTACT_RAFA, waLink } from "@/lib/contact";
 
 if (typeof window !== "undefined") {
@@ -195,6 +196,15 @@ export function CinematicFooter() {
                 Terms of Service
               </Magnetic>
             </div>
+              <Magnetic
+                href="https://github.com/VernsDS/Seven_Excellent203"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-glass-pill footer-pill-sm"
+              >
+                <GitFork size={14} strokeWidth={2} aria-hidden="true" />
+                GitHub
+              </Magnetic>
           </div>
         </div>
 

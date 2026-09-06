@@ -32,6 +32,9 @@ export function MotionBanner() {
   const forceMotion = () => {
     setMotionForced(true);
     setShow(false);
+    // Reload so every GSAP component rebuilds its timelines with the
+    // override active from the first tick (banner flow, spec'd behavior).
+    window.location.reload();
   };
 
   const keepStatic = () => {

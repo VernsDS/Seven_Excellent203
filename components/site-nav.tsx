@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { CONTACT_RAFA, waLink } from "@/lib/contact";
@@ -27,7 +28,14 @@ export function SiteNav() {
       <header className={`site-nav${scrolled ? " is-scrolled" : ""}`}>
         <div className="container-page site-nav-inner">
           <Link href="/" className="site-nav-brand">
-            <span className="site-nav-badge display">7E</span>
+            <Image
+              src="/images/branding/class-logo.jpg"
+              alt="Logo kelas 7E Seven Excellent"
+              width={40}
+              height={40}
+              className="site-nav-badge"
+              priority
+            />
             <span className="site-nav-wordmark">
               Seven <em>Excellent</em>
             </span>
