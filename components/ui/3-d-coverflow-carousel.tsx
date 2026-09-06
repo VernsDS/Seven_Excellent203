@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCallback, useRef, useState } from "react";
+import { StudentAvatar } from "@/components/ui/avatar";
 import type { Student } from "@/lib/students";
 
 /**
@@ -87,17 +88,19 @@ export function StudentCoverflow({ students }: { students: Student[] }) {
                     />
                   ) : (
                     <span className="coverflow-placeholder" aria-hidden="true">
-                      <span className="coverflow-placeholder-no">
-                        {String(s.absentNumber).padStart(2, "0")}
-                      </span>
+                      <StudentAvatar
+                        name={s.name}
+                        absentNumber={s.absentNumber}
+                        className="coverflow-avatar"
+                      />
                       <span className="coverflow-placeholder-label">
-                        Photo coming soon
+                        Foto coming soon
                       </span>
                     </span>
                   )}
                   <span className="coverflow-card-shade" aria-hidden="true" />
                   <span className="coverflow-card-mark" aria-hidden="true">
-                    7E
+                    Absen {String(s.absentNumber).padStart(2, "0")}
                   </span>
                 </span>
               </button>

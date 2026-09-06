@@ -13,7 +13,6 @@ const LINKS = [
 ] as const;
 
 export function SiteNav() {
-  const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const sentinelRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
@@ -35,8 +34,10 @@ export function SiteNav() {
       <header className={`site-nav${scrolled ? " is-scrolled" : ""}`}>
         <div className="container-page site-nav-inner">
           <Link href="/" className="site-nav-brand">
-            <span className="display">7E</span>
-            <span>Seven Excellent</span>
+            <span className="site-nav-badge display">7E</span>
+            <span className="site-nav-wordmark">
+              Seven <em>Excellent</em>
+            </span>
           </Link>
 
           <nav aria-label="Primary" className="site-nav-links">
@@ -60,51 +61,15 @@ export function SiteNav() {
             </a>
           </nav>
 
-        <button
-          type="button"
-          className="site-nav-toggle"
-          aria-expanded={open}
-          aria-controls="mobile-menu"
-          aria-label={open ? "Tutup menu" : "Buka menu"}
-          onClick={() => setOpen((o) => !o)}
-        >
-          <span className={`site-nav-toggle-bar${open ? " is-open" : ""}`} />
-          <span className={`site-nav-toggle-bar${open ? " is-open" : ""}`} />
-          <span className={`site-nav-toggle-bar${open ? " is-open" : ""}`} />
-        </button>
-      </div>
-
-      <nav
-        id="mobile-menu"
-        aria-label="Mobile"
-        className={`site-nav-mobile${open ? " is-open" : ""}`}
-        aria-hidden={!open}
-      >
-        <div className="site-nav-mobile-links">
-          {LINKS.map((l, i) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              aria-current={pathname === l.href ? "page" : undefined}
-              tabIndex={open ? 0 : -1}
-              style={{ "--i": i } as React.CSSProperties}
-              onClick={() => setOpen(false)}
-            >
-              {l.label}
-            </Link>
-          ))}
           <a
             href={waLink()}
             target="_blank"
             rel="noopener noreferrer"
-            tabIndex={open ? 0 : -1}
-            style={{ "--i": LINKS.length } as React.CSSProperties}
-            onClick={() => setOpen(false)}
+            className="btn btn-primary site-nav-cta site-nav-cta-mobile"
           >
             {CONTACT_RAFA.label}
           </a>
         </div>
-      </nav>
       </header>
     </>
   );

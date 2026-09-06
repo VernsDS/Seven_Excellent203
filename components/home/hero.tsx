@@ -6,15 +6,21 @@ import { useScrollProgress } from "@/components/ui/scroll-reveal";
 import { CLASS_INFO } from "@/lib/students";
 
 /**
- * Hero: layered editorial typography. Scroll-linked via --p: the giant
+ * Hero: bright playful editorial. Scroll-linked via --exit: the giant
  * 7E drifts up slower than the wordmark, copy fades first, logo mark
- * scales down. The composition visibly exits as the next section enters.
+ * scales down. Decorative blobs are pure CSS, aria-hidden.
  */
 export function Hero() {
   const ref = useScrollProgress<HTMLElement>();
 
   return (
     <section ref={ref} className="hero">
+      <div className="hero-decor" aria-hidden="true">
+        <span className="hero-blob hero-blob--coral" />
+        <span className="hero-blob hero-blob--sky" />
+        <span className="hero-blob hero-blob--sun" />
+        <span className="hero-dots" />
+      </div>
       <div className="container-page hero-inner">
         <p className="hero-eyebrow rise">
           Kelas 7E, {CLASS_INFO.school}

@@ -3,37 +3,48 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Schedule",
   description:
-    "The weekly timetable of Class 7E Seven Excellent, SMPN 203 Jakarta.",
+    "Jadwal mingguan Kelas 7E Seven Excellent, SMPN 203 Jakarta.",
 };
 
 /**
- * No timetable data has been supplied yet - per docs/PRD.md:
- * "Only show teacher/room/time fields when real data exists."
- * Replace this placeholder once the real weekly schedule is provided.
+ * No timetable data has been supplied yet, so each day renders as a
+ * titled card with an honest pending state. Replace the day arrays
+ * with real subjects/times when the class publishes them.
  */
-export default function SchedulePage() {
-  const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"] as const;
+const DAYS = [
+  { name: "Senin", tint: "var(--coral-soft)", accent: "var(--coral-deep)" },
+  { name: "Selasa", tint: "var(--sky-soft)", accent: "var(--sky-deep)" },
+  { name: "Rabu", tint: "var(--sun-soft)", accent: "#8a6d00" },
+  { name: "Kamis", tint: "var(--sky-soft)", accent: "var(--sky-deep)" },
+  { name: "Jumat", tint: "var(--coral-soft)", accent: "var(--coral-deep)" },
+] as const;
 
+export default function SchedulePage() {
   return (
     <div className="container-page py-16">
-      <p className="eyebrow">Schedule</p>
+      <p className="eyebrow-chip">Schedule</p>
       <h1 className="display mt-3 text-4xl text-balance-h md:text-5xl">
-        The week, hour by hour.
+        Minggu 7E, jam demi jam.
       </h1>
-      <p className="mt-4 max-w-lg text-muted">
-        The full timetable will appear here once the class schedule is
-        finalized and published. Nothing is shown until it is real.
+      <p className="mt-4 max-w-lg section-sub">
+        Jadwal lengkap tampil hanya setelah data asli dirilis. Sesuai aturan
+        kelas, tidak ada yang ditampilkan setengah jadi.
       </p>
 
-      <div className="mt-12 grid gap-4 md:grid-cols-5">
-        {days.map((day) => (
+      <div className="schedule-preview mt-12">
+        {DAYS.map((d) => (
           <div
-            key={day}
-            className="border border-line bg-surface p-5 text-center"
+            key={d.name}
+            className="schedule-day card"
+            style={{ background: d.tint }}
           >
-            <p className="eyebrow">{day}</p>
-            <p className="display mt-6 text-2xl text-muted">-</p>
-            <p className="mt-4 text-xs text-muted">Timetable pending</p>
+            <span className="schedule-day-name" style={{ color: d.accent }}>
+              {d.name}
+            </span>
+            <span className="schedule-day-mark" aria-hidden="true">
+              —
+            </span>
+            <span className="schedule-day-note">Menunggu jadwal</span>
           </div>
         ))}
       </div>

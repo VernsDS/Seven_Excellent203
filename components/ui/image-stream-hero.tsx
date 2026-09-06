@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { waLink } from "@/lib/contact";
+import { StudentAvatar } from "@/components/ui/avatar";
 import type { Student } from "@/lib/students";
 
 /**
@@ -75,11 +76,13 @@ function StreamCard({ student: s }: { student: Student }) {
           />
         ) : (
           <div className="stream-placeholder" aria-hidden="true">
+            <StudentAvatar
+              name={s.name}
+              absentNumber={s.absentNumber}
+              className="stream-avatar"
+            />
             <span className="stream-placeholder-kicker">
               Foto siswa/i 7E
-            </span>
-            <span className="stream-placeholder-no">
-              {String(s.absentNumber).padStart(2, "0")}
             </span>
             <span className="stream-placeholder-label">
               Foto belum ditambahkan

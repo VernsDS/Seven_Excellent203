@@ -1,66 +1,67 @@
 import type { Metadata } from "next";
-import { CLASS_INFO } from "@/lib/students";
+import {
+  Users,
+  School,
+  Crown,
+  GraduationCap,
+  BookOpen,
+} from "lucide-react";
+import { CLASS_INFO, president, STUDENTS } from "@/lib/students";
 
 export const metadata: Metadata = {
   title: "About",
   description:
-    "Who Seven Excellent is - Class 7E, SMPN 203 Jakarta, 36 students led by Class President Maulana Aliffian.",
+    "Tentang Kelas 7E Seven Excellent, SMPN 203 Jakarta: 36 murid, satu arsip.",
 };
 
 export default function AboutPage() {
+  const pres = president();
+
+  const stats = [
+    { icon: Users, label: "Jumlah murid", value: String(STUDENTS.length), tint: "var(--coral-soft)", fg: "var(--coral-deep)" },
+    { icon: Crown, label: "Ketua kelas", value: pres.name, tint: "var(--sun-soft)", fg: "#8a6d00" },
+    { icon: GraduationCap, label: "Wali kelas", value: CLASS_INFO.teacher, tint: "var(--sky-soft)", fg: "var(--sky-deep)" },
+    { icon: School, label: "Sekolah", value: CLASS_INFO.school, tint: "var(--coral-soft)", fg: "var(--coral-deep)" },
+    { icon: BookOpen, label: "Kelas", value: "7E - Seven Excellent", tint: "var(--sky-soft)", fg: "var(--sky-deep)" },
+  ];
+
   return (
     <div className="container-page py-16">
-      <p className="eyebrow">About</p>
+      <p className="eyebrow-chip">About</p>
       <h1 className="display mt-3 max-w-3xl text-4xl text-balance-h md:text-5xl">
-        One class, one name, one standard.
+        Nama itu standar, bukan hiasan.
       </h1>
 
-      <div className="mt-14 grid gap-12 md:grid-cols-[1.1fr_0.9fr]">
-        <div className="space-y-6 text-lg leading-relaxed text-muted">
-          <p>
-            <span className="text-foreground">Seven Excellent</span> is Class 7E
-            of {CLASS_INFO.school} - 36 students who share one room, one
-            timetable, and one archive. The name is the standard: everything we
-            put out carries the class identity with it.
-          </p>
-          <p>
-            This website is the class&rsquo;s official digital home. It keeps
-            the directory of every student by absent number, preserves class
-            memories in the gallery, and publishes the weekly schedule. No
-            feeds, no algorithms - just the class, archived properly.
-          </p>
-          <p>
-            The roster is authoritative and complete: absent numbers 01 through
-            36, exactly as recorded by the class. Photos are added only when
-            authorized assets exist - nothing is invented.
-          </p>
-        </div>
+      <div className="mt-10 max-w-3xl space-y-6 text-lg leading-relaxed text-muted">
+        <p>
+          Seven Excellent adalah kelas 7E di {CLASS_INFO.school}. Tiga puluh
+          enam murid dengan nomor absen 01 sampai 36, dipandu wali kelas{" "}
+          {CLASS_INFO.teacher}.
+        </p>
+        <p>
+          Nama kelas kami pegang sebagai standar kerja: apa pun yang keluar
+          dari 7E, keluar dengan identitas itu. Website ini adalah arsip
+          digital kelas, dirawat bersama-sama, dibuka kapan saja.
+        </p>
+        <p>
+          Roster di halaman Students itu lengkap dan resmi. Foto siswa
+          ditambahkan satu per satu setelah asetnya beres, bukan asal tempel.
+        </p>
+      </div>
 
-        <aside className="h-fit border border-line bg-surface p-8">
-          <p className="eyebrow">At a glance</p>
-          <dl className="mt-6 space-y-4 text-sm">
-            <div className="flex justify-between border-b border-line pb-3">
-              <dt className="text-muted">Class</dt>
-              <dd className="font-medium">7E - Seven Excellent</dd>
-            </div>
-            <div className="flex justify-between border-b border-line pb-3">
-              <dt className="text-muted">School</dt>
-              <dd className="font-medium">{CLASS_INFO.school}</dd>
-            </div>
-            <div className="flex justify-between border-b border-line pb-3">
-              <dt className="text-muted">Students</dt>
-              <dd className="font-medium">36</dd>
-            </div>
-            <div className="flex justify-between border-b border-line pb-3">
-              <dt className="text-muted">Class President</dt>
-              <dd className="font-medium">Maulana Aliffian (#17)</dd>
-            </div>
-            <div className="flex justify-between border-b border-line pb-3">
-              <dt className="text-muted">Homeroom Teacher</dt>
-              <dd className="font-medium">{CLASS_INFO.teacher}</dd>
-            </div>
-          </dl>
-        </aside>
+      <div className="about-stats mt-12">
+        {stats.map((s) => (
+          <div key={s.label} className="stat-card card">
+            <span
+              className="stat-icon"
+              style={{ background: s.tint, color: s.fg }}
+            >
+              <s.icon size={20} strokeWidth={2} />
+            </span>
+            <span className="stat-label">{s.label}</span>
+            <span className="stat-value">{s.value}</span>
+          </div>
+        ))}
       </div>
     </div>
   );

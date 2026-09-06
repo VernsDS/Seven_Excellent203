@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
 import Link from "next/link";
 import { SiteNav } from "@/components/site-nav";
+import { FloatingNav } from "@/components/floating-nav";
 import { MotionBanner } from "@/components/ui/motion-banner";
 import { CLASS_INFO } from "@/lib/students";
 import { CONTACT_RAFA, waLink } from "@/lib/contact";
@@ -57,7 +58,7 @@ function SiteFooter() {
     <footer className="site-footer">
       <div className="container-page site-footer-inner">
         <div className="site-footer-brand">
-          <span className="display text-accent">7E</span>
+          <span className="display site-footer-badge">7E</span>
           <div>
             <p className="site-footer-name">Seven Excellent</p>
             <p className="site-footer-school">Kelas 7E · {CLASS_INFO.school}</p>
@@ -74,7 +75,7 @@ function SiteFooter() {
             href={waLink()}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn btn-ghost site-footer-cta"
+            className="btn btn-primary site-footer-cta"
           >
             {CONTACT_RAFA.label}
           </a>
@@ -126,6 +127,7 @@ export default function RootLayout({
           {children}
         </main>
         <SiteFooter />
+        <FloatingNav />
       </body>
     </html>
   );
