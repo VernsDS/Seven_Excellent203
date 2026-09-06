@@ -2,16 +2,70 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useScrollProgress } from "@/components/ui/scroll-reveal";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { CLASS_INFO } from "@/lib/students";
 
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
+const reduceActive = () =>
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
+  !document.documentElement.classList.contains("motion-forced");
+
 /**
- * Hero: bright playful editorial. Scroll-linked via --exit: the giant
- * 7E drifts up slower than the wordmark, copy fades first, logo mark
- * scales down. Decorative blobs are pure CSS, aria-hidden.
+ * Hero: bright playful editorial. GSAP scrub drives the layered exit:
+ * the giant 7E and wordmark drift up at different rates while the copy
+ * fades, as the next section enters. Reduced motion = fully static.
  */
 export function Hero() {
-  const ref = useScrollProgress<HTMLElement>();
+  const ref = useRef<HTMLElement>(null);
+  const stackRef = useRef<HTMLHeadingElement>(null);
+  const bigRef = useRef<HTMLSpanElement>(null);
+  const copyRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    const section = ref.current;
+    if (!section) return;
+
+    let ctx: gsap.Context | undefined;
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    const build = () => {
+      ctx?.revert();
+      ctx = gsap.context(() => {
+        if (reduceActive()) {
+          gsap.set([stackRef.current, bigRef.current, copyRef.current], {
+            clearProps: "all",
+          });
+          return;
+        }
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: "bottom 30%",
+            scrub: 1,
+          },
+        });
+        tl.to(stackRef.current, { y: -56, ease: "none" }, 0)
+          .to(bigRef.current, { y: -24, scale: 0.995, ease: "none" }, 0)
+          .to(copyRef.current, { opacity: 0, ease: "none" }, 0);
+      }, section);
+    };
+
+    build();
+
+    const onMq = () => build();
+    mq.addEventListener("change", onMq);
+
+    return () => {
+      mq?.removeEventListener("change", onMq);
+      ctx?.revert();
+    };
+  }, []);
 
   return (
     <section ref={ref} className="hero">
@@ -26,8 +80,8 @@ export function Hero() {
           Kelas 7E, {CLASS_INFO.school}
         </p>
 
-        <h1 className="hero-stack rise rise-1" aria-label="Seven Excellent 7E">
-          <span className="hero-7e" aria-hidden="true">
+        <h1 ref={stackRef} className="hero-stack rise rise-1" aria-label="Seven Excellent 7E">
+          <span ref={bigRef} className="hero-7e" aria-hidden="true">
             7E
           </span>
           <span className="hero-word" aria-hidden="true">
@@ -37,7 +91,7 @@ export function Hero() {
           </span>
         </h1>
 
-        <p className="hero-copy rise rise-2">
+        <p ref={copyRef} className="hero-copy rise rise-2">
           Arsip digital resmi kelas 7E: 36 murid, satu ruang kelas, dan satu
           tahun yang tidak mau dilupakan begitu saja.
         </p>

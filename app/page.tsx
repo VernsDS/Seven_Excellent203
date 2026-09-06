@@ -1,4 +1,5 @@
 import { ClassIdentity } from "@/components/ui/class-identity";
+import { HeroPinReveal } from "@/components/ui/hero-pin-reveal";
 import { ImageStreamHero } from "@/components/ui/image-stream-hero";
 import { StudentCoverflow } from "@/components/ui/3-d-coverflow-carousel";
 import { Hero } from "@/components/home/hero";
@@ -14,6 +15,7 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      <HeroPinReveal />
       <ClassIdentity />
       <section className="home-section" aria-label="Dinding potret siswa">
         <div className="container-page">

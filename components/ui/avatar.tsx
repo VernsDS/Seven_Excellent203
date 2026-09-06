@@ -1,9 +1,9 @@
 const AVATAR_COLORS = [
-  { bg: "var(--coral)", fg: "#201a17" },
-  { bg: "var(--sky)", fg: "#0f2733" },
-  { bg: "var(--sun)", fg: "#332a05" },
-  { bg: "var(--coral-deep)", fg: "#fff6f2" },
-  { bg: "var(--sky-deep)", fg: "#f0faff" },
+  { bg: "var(--coral)", fg: "#2b2013" },
+  { bg: "var(--sky)", fg: "#123240" },
+  { bg: "var(--sun)", fg: "#6b5a10" },
+  { bg: "var(--coral-deep)", fg: "#fff3ea" },
+  { bg: "var(--sky-deep)", fg: "#eaf7ff" },
 ] as const;
 
 export function initialsOf(name: string): string {
