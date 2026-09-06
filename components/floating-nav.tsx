@@ -10,15 +10,12 @@ import {
   Search,
   LayoutGrid,
   X,
-  CalendarDays,
-  Info,
-  ShieldCheck,
-  FileText,
 } from "lucide-react";
 import { StudentAvatar } from "@/components/ui/avatar";
+import { useCurvedMenu } from "@/components/curved-menu";
 import { STUDENTS } from "@/lib/students";
 
-type Overlay = "none" | "search" | "more";
+type Overlay = "none" | "search";
 
 const NAV_ITEMS = [
   { href: "/", label: "Home", icon: Home },
@@ -26,12 +23,7 @@ const NAV_ITEMS = [
   { href: "/gallery", label: "Galeri", icon: Images },
 ] as const;
 
-const MORE_LINKS = [
-  { href: "/schedule", label: "Schedule", icon: CalendarDays },
-  { href: "/about", label: "About 7E", icon: Info },
-  { href: "/privacy", label: "Privacy", icon: ShieldCheck },
-  { href: "/terms", label: "Terms", icon: FileText },
-] as const;
+
 
 export function FloatingNav() {
   const [overlay, setOverlay] = useState<Overlay>("none");
@@ -40,6 +32,7 @@ export function FloatingNav() {
   const pathname = usePathname();
   const lastY = useRef(0);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { openMenu } = useCurvedMenu();
 
   useEffect(() => {
     let raf = 0;
@@ -108,9 +101,11 @@ export function FloatingNav() {
         <button
           type="button"
           className="floating-nav-item"
-          aria-label="Menu lainnya"
-          aria-expanded={overlay === "more"}
-          onClick={() => setOverlay(overlay === "more" ? "none" : "more")}
+          aria-label="Buka menu lainnya"
+          onClick={() => {
+            setOverlay("none");
+            openMenu();
+          }}
         >
           <span className="floating-nav-bubble">
             <LayoutGrid size={20} strokeWidth={2} />
@@ -176,36 +171,6 @@ export function FloatingNav() {
         </div>
       )}
 
-      {overlay === "more" && (
-        <div className="nav-overlay" role="dialog" aria-label="Menu lainnya">
-          <div className="nav-overlay-card nav-more-card">
-            <div className="nav-overlay-head">
-              <h2 className="display">Jelajahi</h2>
-              <button
-                type="button"
-                className="nav-overlay-close"
-                aria-label="Tutup menu"
-                onClick={() => setOverlay("none")}
-              >
-                <X size={20} />
-              </button>
-            </div>
-            <div className="nav-more-grid">
-              {MORE_LINKS.map((l) => (
-                <Link
-                  key={l.href}
-                  href={l.href}
-                  className="nav-more-item"
-                  onClick={() => setOverlay("none")}
-                >
-                  <l.icon size={20} strokeWidth={2} />
-                  {l.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }

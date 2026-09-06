@@ -4,14 +4,14 @@ import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motionForced, prefersReducedMotion } from "@/lib/motion";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
 const reduceActive = () =>
-  window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
-  !document.documentElement.classList.contains("motion-forced");
+  prefersReducedMotion() && !motionForced();
 
 /**
  * Class identity: GSAP scrub timeline. The logo travels from far left

@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motionForced, prefersReducedMotion } from "@/lib/motion";
 import { CONTACT_RAFA, waLink } from "@/lib/contact";
 
 if (typeof window !== "undefined") {
@@ -10,9 +11,7 @@ if (typeof window !== "undefined") {
 }
 
 const reduceActive = () =>
-  typeof window !== "undefined" &&
-  window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
-  !document.documentElement.classList.contains("motion-forced");
+  prefersReducedMotion() && !motionForced();
 
 const MAGNETIC_SELECTOR = ".footer-magnetic";
 

@@ -4,6 +4,7 @@ import { SiteNav } from "@/components/site-nav";
 import { FloatingNav } from "@/components/floating-nav";
 import { MotionBanner } from "@/components/ui/motion-banner";
 import { CinematicFooter } from "@/components/cinematic-footer";
+import { CurvedMenuProvider } from "@/components/curved-menu";
 import { CLASS_INFO } from "@/lib/students";
 import "./globals.css";
 
@@ -80,13 +81,15 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <SiteNav />
-        <MotionBanner />
-        <main id="main" className="flex-1">
-          {children}
-        </main>
-        <CinematicFooter />
-        <FloatingNav />
+        <CurvedMenuProvider>
+          <SiteNav />
+          <MotionBanner />
+          <main id="main" className="flex-1">
+            {children}
+          </main>
+          <CinematicFooter />
+          <FloatingNav />
+        </CurvedMenuProvider>
       </body>
     </html>
   );

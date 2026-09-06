@@ -3,15 +3,14 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motionForced, prefersReducedMotion } from "@/lib/motion";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
 const reduceActive = () =>
-  typeof window !== "undefined" &&
-  window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
-  !document.documentElement.classList.contains("motion-forced");
+  prefersReducedMotion() && !motionForced();
 
 interface Tag {
   text: string;
@@ -166,7 +165,7 @@ export function HeroPinReveal() {
           <p className="pin-heading display">
             {HEADING.split(" ").map((w, i) => (
               <span className="reveal-word" key={`${w}-${i}`}>
-                {w}{" "}
+                {w}
               </span>
             ))}
           </p>

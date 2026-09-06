@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
-const STORAGE_KEY = "7e-motion-choice";
+import { MOTION_FLAG_KEY, setMotionForced } from "@/lib/motion";
 
 /**
- * When the OS reports prefers-reduced-motion, offer an explicit choice:
- * "Matikan" forces animations on for this site only (html.motion-forced,
- * persisted); "Biarkan" keeps the static experience and never asks again.
- * The banner also dismisses itself if the OS setting is switched off.
+ * Reduce-motion notice, per spec: appears on every full page load while
+ * the OS setting is active (sessionStorage only, never localStorage).
+ * "Matikan" forces full animation for this tab session; "Biarkan"
+ * dismisses for the session and the site stays reduced.
  */
 export function MotionBanner() {
   const [show, setShow] = useState(false);
@@ -17,15 +16,9 @@ export function MotionBanner() {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     const evaluate = () => {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored === "forced") {
-        document.documentElement.classList.add("motion-forced");
-      }
-      setShow(
-        mq.matches &&
-          stored !== "declined" &&
-          !document.documentElement.classList.contains("motion-forced"),
-      );
+      const override = sessionStorage.getItem(MOTION_FLAG_KEY) === "true";
+      document.documentElement.classList.toggle("motion-forced", override);
+      setShow(mq.matches && !override);
     };
 
     const raf = requestAnimationFrame(evaluate);
@@ -37,13 +30,12 @@ export function MotionBanner() {
   }, []);
 
   const forceMotion = () => {
-    localStorage.setItem(STORAGE_KEY, "forced");
-    document.documentElement.classList.add("motion-forced");
+    setMotionForced(true);
     setShow(false);
   };
 
   const keepStatic = () => {
-    localStorage.setItem(STORAGE_KEY, "declined");
+    setMotionForced(false);
     setShow(false);
   };
 
@@ -52,8 +44,8 @@ export function MotionBanner() {
   return (
     <div role="status" className="motion-banner">
       <p className="motion-banner-text">
-        Halo, reduce motion kamu aktif nih! Kalau kamu ingin melihat semua
-        animasi website ini, nyalakan dulu ya.
+        Reduce motion kamu aktif nih, matikan untuk melihat seluruh animasi
+        di website ini.
       </p>
       <div className="motion-banner-actions">
         <button

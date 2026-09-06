@@ -1,10 +1,14 @@
-const AVATAR_COLORS = [
-  { bg: "var(--coral)", fg: "#2b2013" },
-  { bg: "var(--sky)", fg: "#123240" },
-  { bg: "var(--sun)", fg: "#6b5a10" },
-  { bg: "var(--coral-deep)", fg: "#fff3ea" },
-  { bg: "var(--sky-deep)", fg: "#eaf7ff" },
-] as const;
+import { avatarVariantFor } from "@/lib/student-gender";
+
+const AVATAR_VARIANTS: Record<
+  "male" | "female" | "neutral" | "brand",
+  { bg: string; fg: string }
+> = {
+  male: { bg: "var(--male)", fg: "#0e2a47" },
+  female: { bg: "var(--female)", fg: "#471527" },
+  neutral: { bg: "var(--muted-bg)", fg: "#2b2620" },
+  brand: { bg: "var(--coral)", fg: "#201a17" },
+};
 
 export function initialsOf(name: string): string {
   return name
@@ -16,9 +20,9 @@ export function initialsOf(name: string): string {
 }
 
 /**
- * Deterministic per-student avatar: rotating brand colors keyed by
- * absent number, so the placeholder wall looks varied but stable
- * across renders. Used wherever a student has no photo yet.
+ * Per-student avatar: gender-tinted when known (male blue / female pink),
+ * neutral linen when the gender data is still empty. Color keyed by
+ * absent number stays deterministic across renders.
  */
 export function StudentAvatar({
   name,
@@ -31,7 +35,8 @@ export function StudentAvatar({
   className?: string;
   size?: string;
 }) {
-  const c = AVATAR_COLORS[absentNumber % AVATAR_COLORS.length];
+  const variant = avatarVariantFor(absentNumber);
+  const c = AVATAR_VARIANTS[variant];
   return (
     <span
       className={`student-avatar ${className}`}

@@ -1,21 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { CONTACT_RAFA, waLink } from "@/lib/contact";
-
-const LINKS = [
-  { href: "/students", label: "Students" },
-  { href: "/gallery", label: "Gallery" },
-  { href: "/schedule", label: "Schedule" },
-  { href: "/about", label: "About" },
-] as const;
+import { useCurvedMenu } from "@/components/curved-menu";
 
 export function SiteNav() {
   const [scrolled, setScrolled] = useState(false);
   const sentinelRef = useRef<HTMLDivElement>(null);
-  const pathname = usePathname();
+  const { open, toggleMenu } = useCurvedMenu();
 
   useEffect(() => {
     const el = sentinelRef.current;
@@ -40,17 +33,7 @@ export function SiteNav() {
             </span>
           </Link>
 
-          <nav aria-label="Primary" className="site-nav-links">
-            {LINKS.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                aria-current={pathname === l.href ? "page" : undefined}
-                className={pathname === l.href ? "is-current" : undefined}
-              >
-                {l.label}
-              </Link>
-            ))}
+          <div className="site-nav-actions">
             <a
               href={waLink()}
               target="_blank"
@@ -59,16 +42,18 @@ export function SiteNav() {
             >
               {CONTACT_RAFA.label}
             </a>
-          </nav>
-
-          <a
-            href={waLink()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-primary site-nav-cta site-nav-cta-mobile"
-          >
-            {CONTACT_RAFA.label}
-          </a>
+            <button
+              type="button"
+              className="site-nav-burger"
+              aria-label={open ? "Tutup menu" : "Buka menu"}
+              aria-expanded={open}
+              onClick={toggleMenu}
+            >
+              <span className={`site-nav-burger-bar${open ? " is-open" : ""}`} />
+              <span className={`site-nav-burger-bar${open ? " is-open" : ""}`} />
+              <span className={`site-nav-burger-bar${open ? " is-open" : ""}`} />
+            </button>
+          </div>
         </div>
       </header>
     </>

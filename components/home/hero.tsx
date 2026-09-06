@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motionForced, prefersReducedMotion } from "@/lib/motion";
 import { CLASS_INFO } from "@/lib/students";
 
 if (typeof window !== "undefined") {
@@ -12,8 +13,7 @@ if (typeof window !== "undefined") {
 }
 
 const reduceActive = () =>
-  window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
-  !document.documentElement.classList.contains("motion-forced");
+  prefersReducedMotion() && !motionForced();
 
 /**
  * Hero: bright playful editorial. GSAP scrub drives the layered exit:
