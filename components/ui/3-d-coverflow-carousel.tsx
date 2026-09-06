@@ -6,15 +6,11 @@ import { useCallback, useRef, useState } from "react";
 import type { Student } from "@/lib/students";
 
 /**
- * 3D Coverflow student showcase — 7E / Seven Excellent, SMPN 203 Jakarta.
- * Pure CSS 3D transforms (perspective + rotateY + translateZ), zero extra
- * dependencies. Card transforms are computed from two inline CSS vars
- * (--o signed offset, --d depth) so responsiveness lives entirely in CSS.
- *
- * Photos come from student data (`photo?: string`). Students without a
- * photo get an intentional placeholder — never a broken card, never a
- * stock face. Set photo to "/images/students/NN-slug.webp" when real
- * authorized assets arrive in public/images/students/.
+ * 3D coverflow student archive — photo-led digital yearbook. Active
+ * portrait is the focal point; neighbors recede in perspective. Card
+ * transforms derive from two CSS vars (--o offset, --d depth) so all
+ * responsiveness lives in CSS. No photo = designed placeholder, never
+ * a stock face. Photos arrive via data only.
  */
 export function StudentCoverflow({ students }: { students: Student[] }) {
   const [active, setActive] = useState(0);
@@ -55,7 +51,7 @@ export function StudentCoverflow({ students }: { students: Student[] }) {
       <div
         role="group"
         aria-roledescription="carousel"
-        aria-label={`Student showcase 7E — student ${active + 1} of ${students.length}`}
+        aria-label={`Arsip siswa 7E — siswa ${active + 1} dari ${students.length}`}
         tabIndex={0}
         onKeyDown={onKeyDown}
         onPointerDown={onPointerDown}
@@ -68,95 +64,98 @@ export function StudentCoverflow({ students }: { students: Student[] }) {
           const d = Math.abs(o);
           if (d > 3) return null;
           return (
-            <button
+            <div
               key={s.id}
-              type="button"
-              onClick={() => setActive(i)}
-              aria-label={`${s.name}, absen ${s.absentNumber}${s.role === "Class President" ? ", Class President" : ""}`}
-              aria-current={o === 0}
               className={`coverflow-card${o === 0 ? " is-active" : ""}`}
               style={{ "--o": o, "--d": d } as React.CSSProperties}
             >
-              <span className="coverflow-card-photo">
-                {s.photo ? (
-                  <Image
-                    src={s.photo}
-                    alt={s.name}
-                    fill
-                    sizes="(max-width: 640px) 280px, (max-width: 1024px) 340px, 400px"
-                    draggable={false}
-                  />
-                ) : (
-                  <span className="coverflow-placeholder" aria-hidden="true">
-                    <span className="coverflow-placeholder-no">
-                      {String(s.absentNumber).padStart(2, "0")}
+              <button
+                type="button"
+                onClick={() => setActive(i)}
+                aria-label={`${s.name}, absen ${s.absentNumber}${s.role === "Class President" ? ", Class President" : ""}`}
+                aria-current={o === 0}
+                className="coverflow-card-hit"
+              >
+                <span className="coverflow-card-photo">
+                  {s.photo ? (
+                    <Image
+                      src={s.photo}
+                      alt={s.name}
+                      fill
+                      sizes="(max-width: 640px) 300px, (max-width: 1024px) 360px, 420px"
+                      draggable={false}
+                    />
+                  ) : (
+                    <span className="coverflow-placeholder" aria-hidden="true">
+                      <span className="coverflow-placeholder-no">
+                        {String(s.absentNumber).padStart(2, "0")}
+                      </span>
+                      <span className="coverflow-placeholder-label">
+                        Photo coming soon
+                      </span>
                     </span>
-                    <span className="coverflow-placeholder-label">
-                      Photo coming soon
-                    </span>
+                  )}
+                  <span className="coverflow-card-shade" aria-hidden="true" />
+                  <span className="coverflow-card-mark" aria-hidden="true">
+                    7E
                   </span>
-                )}
-                <span className="coverflow-card-mark" aria-hidden="true">
-                  7E
+                </span>
+              </button>
+              <span className="coverflow-card-body">
+                <span className="coverflow-card-name">{s.name}</span>
+                <span className="coverflow-card-role">
+                  {s.role === "Class President"
+                    ? "Class President"
+                    : "Student"}
+                </span>
+                <span className="coverflow-card-absen">
+                  Absen {String(s.absentNumber).padStart(2, "0")}
                 </span>
               </span>
-              <span className="coverflow-card-name">{s.name}</span>
-              <span className="coverflow-card-meta">
-                Absen {String(s.absentNumber).padStart(2, "0")}
-                {s.role === "Class President" ? " · Class President" : ""}
-              </span>
-            </button>
+              {o === 0 && (
+                <Link
+                  href={`/students/${s.id}`}
+                  className="coverflow-card-cta"
+                >
+                  View profile →
+                </Link>
+              )}
+            </div>
           );
         })}
       </div>
 
       <div className="coverflow-caption" aria-live="polite">
-        <div className="coverflow-caption-main">
-          <p className="coverflow-caption-name">{current.name}</p>
-          <p className="coverflow-caption-meta">
-            Absen {String(current.absentNumber).padStart(2, "0")} ·{" "}
-            {current.role}
-          </p>
-          {!current.photo && (
-            <p className="coverflow-caption-note">
-              Fotonya belum ada. Merasa ini kamu? Hubungi Rafa untuk
-              menambahkan fotomu di arsip ini.
-            </p>
-          )}
-        </div>
-        <Link
-          href={`/students/${current.id}`}
-          className="btn btn-ghost coverflow-caption-cta"
-        >
-          View profile
-        </Link>
+        <p className="coverflow-caption-count">
+          {String(active + 1).padStart(2, "0")} / {students.length}
+        </p>
+        <p className="coverflow-caption-note">
+          Belum berfoto? Hubungi Rafa untuk menambahkan fotomu di arsip ini.
+        </p>
       </div>
 
       <div className="coverflow-controls">
         <button
           type="button"
           className="coverflow-arrow"
-          aria-label="Previous student"
+          aria-label="Siswa sebelumnya"
           onClick={() => go(-1)}
         >
           ←
         </button>
-        <div className="coverflow-dots" role="presentation">
-          {students.map((s, i) => (
-            <button
-              key={s.id}
-              type="button"
-              aria-label={`Go to ${s.name}, absen ${s.absentNumber}`}
-              aria-current={i === active}
-              className={`coverflow-dot${i === active ? " is-active" : ""}`}
-              onClick={() => setActive(i)}
-            />
-          ))}
-        </div>
+        <input
+          type="range"
+          className="coverflow-scrub"
+          min={0}
+          max={students.length - 1}
+          value={active}
+          onChange={(e) => setActive(Number(e.target.value))}
+          aria-label="Pilih siswa dalam arsip"
+        />
         <button
           type="button"
           className="coverflow-arrow"
-          aria-label="Next student"
+          aria-label="Siswa berikutnya"
           onClick={() => go(1)}
         >
           →

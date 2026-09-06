@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter } from "next/font/google";
+import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
 import Link from "next/link";
+import { SiteNav } from "@/components/site-nav";
+import { CLASS_INFO } from "@/lib/students";
 import "./globals.css";
 
 const inter = Inter({
@@ -14,7 +16,10 @@ const fraunces = Fraunces({
   axes: ["SOFT", "WONK"],
 });
 
-import { CLASS_INFO } from "@/lib/students";
+const jetbrains = JetBrains_Mono({
+  variable: "--font-jetbrains",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(CLASS_INFO.domain),
@@ -23,7 +28,7 @@ export const metadata: Metadata = {
     template: "%s — Seven Excellent",
   },
   description:
-    "Official website of Class 7E / Seven Excellent, SMPN 203 Jakarta. 36 students, one class, one archive.",
+    "Arsip digital resmi Kelas 7E / Seven Excellent, SMPN 203 Jakarta. 36 murid, satu kelas, satu arsip.",
   alternates: {
     canonical: "./",
   },
@@ -32,49 +37,18 @@ export const metadata: Metadata = {
     siteName: "Seven Excellent",
     title: "Seven Excellent — Kelas 7E SMPN 203 Jakarta",
     description:
-      "Official website of Class 7E / Seven Excellent, SMPN 203 Jakarta.",
+      "Arsip digital resmi Kelas 7E / Seven Excellent, SMPN 203 Jakarta.",
     url: CLASS_INFO.domain,
+    images: [{ url: "/images/branding/class-logo.jpg", width: 1024, height: 1012 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Seven Excellent — Kelas 7E SMPN 203 Jakarta",
     description:
-      "Official website of Class 7E / Seven Excellent, SMPN 203 Jakarta.",
+      "Arsip digital resmi Kelas 7E / Seven Excellent, SMPN 203 Jakarta.",
+    images: ["/images/branding/class-logo.jpg"],
   },
 };
-
-const NAV = [
-  { href: "/students", label: "Students" },
-  { href: "/gallery", label: "Gallery" },
-  { href: "/schedule", label: "Schedule" },
-  { href: "/about", label: "About" },
-] as const;
-
-function SiteHeader() {
-  return (
-    <header className="sticky top-0 z-50 border-b border-line bg-background/85 backdrop-blur">
-      <div className="container-page flex h-16 items-center justify-between">
-        <Link href="/" className="flex items-baseline gap-2">
-          <span className="display text-lg text-accent">7E</span>
-          <span className="text-sm font-semibold tracking-wide">
-            Seven Excellent
-          </span>
-        </Link>
-        <nav aria-label="Primary" className="flex items-center gap-5 text-sm">
-          {NAV.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="text-muted transition-colors hover:text-foreground"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-      </div>
-    </header>
-  );
-}
 
 function SiteFooter() {
   return (
@@ -92,7 +66,7 @@ function SiteFooter() {
             Terms
           </Link>
         </nav>
-        <p>Homeroom Teacher: {CLASS_INFO.teacher}</p>
+        <p>Wali kelas: {CLASS_INFO.teacher}</p>
       </div>
     </footer>
   );
@@ -105,8 +79,8 @@ export default function RootLayout({
 }) {
   return (
     <html
-      lang="en"
-      className={`${inter.variable} ${fraunces.variable} h-full antialiased`}
+      lang="id"
+      className={`${inter.variable} ${fraunces.variable} ${jetbrains.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         <a
@@ -115,7 +89,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <SiteHeader />
+        <SiteNav />
         <main id="main" className="flex-1">
           {children}
         </main>

@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 /*
- * Seven Excellent design tokens — per docs/DESIGN.md
- * Near-black foundation, graphite surfaces, one identity accent.
- * Typography: one display family (Fraunces), one body family (Inter).
+ * Seven Excellent — digital yearbook / editorial archive.
+ * Near-black foundation, graphite surfaces, amber accent from the class
+ * logo. Fraunces (display) + Inter (body) + JetBrains Mono (metadata).
  */
 :root {
   --background: #101013;
@@ -29,6 +29,7 @@
   --color-accent-ink: var(--accent-ink);
   --font-sans: var(--font-inter);
   --font-display: var(--font-fraunces);
+  --font-mono: var(--font-jetbrains);
 }
 
 html {
@@ -74,18 +75,15 @@ body {
   }
 }
 
-.eyebrow {
-  font-size: 0.75rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
 .display {
   font-family: var(--font-fraunces), Georgia, serif;
   font-weight: 560;
   letter-spacing: -0.02em;
   line-height: 1.02;
+}
+
+.mono {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
 }
 
 .text-balance-h {
@@ -105,9 +103,14 @@ body {
   transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease, transform 200ms ease;
 }
 
+.btn:active {
+  transform: scale(0.98);
+}
+
 .btn:focus-visible,
 a:focus-visible,
-button:focus-visible {
+button:focus-visible,
+input:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
@@ -131,61 +134,10 @@ button:focus-visible {
   border-color: var(--muted);
 }
 
-/* ---- hero 3D emblem (pure CSS, no JS) ---- */
-
-.emblem-scene {
-  perspective: 900px;
-}
-
-.emblem {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1;
-  transform-style: preserve-3d;
-  animation: emblem-spin 26s linear infinite;
-}
-
-.emblem-face {
-  position: absolute;
-  inset: 0;
-  border: 1px solid var(--line);
-  background:
-    linear-gradient(135deg, rgb(228 179 74 / 0.12), transparent 55%),
-    var(--surface);
-  display: grid;
-  place-items: center;
-}
-
-.emblem-face span {
-  font-family: var(--font-fraunces), Georgia, serif;
-  font-size: clamp(4rem, 12vw, 7rem);
-  color: var(--accent);
-  line-height: 1;
-}
-
-.emblem-face--front { transform: translateZ(90px); }
-.emblem-face--back { transform: rotateY(180deg) translateZ(90px); }
-.emblem-face--right { transform: rotateY(90deg) translateZ(90px); }
-.emblem-face--left { transform: rotateY(-90deg) translateZ(90px); }
-.emblem-face--top { transform: rotateX(90deg) translateZ(90px); border-style: dashed; }
-.emblem-face--bottom { transform: rotateX(-90deg) translateZ(90px); border-style: dashed; }
-
-@keyframes emblem-spin {
-  from { transform: rotateX(-12deg) rotateY(0deg); }
-  to { transform: rotateX(-12deg) rotateY(360deg); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .emblem {
-    animation: none;
-    transform: rotateX(-12deg) rotateY(-24deg);
-  }
-}
-
-/* ---- reveal on load ---- */
+/* ---- load-in (hero only) ---- */
 
 @keyframes rise {
-  from { opacity: 0; transform: translateY(14px); }
+  from { opacity: 0; transform: translateY(16px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -193,12 +145,745 @@ button:focus-visible {
   animation: rise 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.rise-1 { animation-delay: 60ms; }
-.rise-2 { animation-delay: 140ms; }
-.rise-3 { animation-delay: 220ms; }
-.rise-4 { animation-delay: 300ms; }
+.rise-1 { animation-delay: 80ms; }
+.rise-2 { animation-delay: 180ms; }
+.rise-3 { animation-delay: 280ms; }
+.rise-4 { animation-delay: 380ms; }
 
-/* ---- directory archive grid ---- */
+/* ---- navigation ---- */
+
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid var(--line);
+  background: rgb(16 16 19 / 0.88);
+  backdrop-filter: blur(10px);
+}
+
+.site-nav-inner {
+  display: flex;
+  height: 4rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.site-nav-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.site-nav-brand .display {
+  font-size: 1.25rem;
+  color: var(--accent);
+}
+
+.site-nav-brand span:last-child {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.site-nav-links {
+  display: none;
+  align-items: center;
+  gap: 1.5rem;
+  font-size: 0.9rem;
+}
+
+@media (min-width: 768px) {
+  .site-nav-links {
+    display: flex;
+  }
+  .site-nav-toggle {
+    display: none;
+  }
+}
+
+.site-nav-links a {
+  color: var(--muted);
+  transition: color 180ms ease;
+}
+
+.site-nav-links a:hover,
+.site-nav-links a.is-current {
+  color: var(--foreground);
+}
+
+.site-nav-links a.is-current {
+  color: var(--accent);
+}
+
+.site-nav-cta {
+  padding: 0.55rem 1.1rem;
+  font-size: 0.82rem;
+}
+
+.site-nav-toggle {
+  border: 1px solid var(--line);
+  border-radius: 9999px;
+  padding: 0.45rem 1rem;
+  font-size: 0.8rem;
+  color: var(--foreground);
+  background: transparent;
+  cursor: pointer;
+}
+
+.site-nav-mobile {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--line);
+}
+
+.site-nav-mobile a {
+  padding: 0.9rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--foreground);
+}
+
+.site-nav-mobile a[aria-current="page"] {
+  color: var(--accent);
+}
+
+/* ---- hero: layered editorial typography ---- */
+
+.hero {
+  overflow: clip;
+}
+
+.hero-inner {
+  padding-block: 4.5rem 5rem;
+}
+
+@media (min-width: 768px) {
+  .hero-inner {
+    padding-block: 6.5rem 7rem;
+  }
+}
+
+.hero-eyebrow {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hero-stack {
+  position: relative;
+  margin-top: 1.5rem;
+  line-height: 0.86;
+}
+
+.hero-7e {
+  display: block;
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-weight: 600;
+  font-size: clamp(9rem, 34vw, 22rem);
+  letter-spacing: -0.04em;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgb(228 179 74 / 0.75);
+  margin-left: -0.04em;
+}
+
+.hero-word {
+  position: absolute;
+  left: clamp(1rem, 8vw, 6rem);
+  bottom: 0.35em;
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-weight: 560;
+  font-size: clamp(2.6rem, 8.5vw, 6rem);
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  color: var(--foreground);
+  text-shadow: 0 0 2.5rem rgb(16 16 19 / 0.9);
+}
+
+.hero-copy {
+  margin-top: 2.25rem;
+  max-width: 34rem;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+.hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.hero .hero-cta {
+  margin-top: 2rem;
+}
+
+.hero-meta {
+  margin-top: 3rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.hero-logo {
+  border-radius: 6px;
+  border: 1px solid var(--line);
+}
+
+.hero-meta-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 9999px;
+  background: var(--accent);
+}
+
+/* ---- home sections ---- */
+
+.home-section {
+  padding-block: 5rem;
+  border-top: 1px solid var(--line);
+}
+
+@media (min-width: 768px) {
+  .home-section {
+    padding-block: 6.5rem;
+  }
+}
+
+.home-section--tight {
+  background: var(--surface);
+}
+
+.section-head {
+  max-width: 44rem;
+}
+
+.section-title {
+  font-size: clamp(1.9rem, 4.5vw, 2.8rem);
+  text-wrap: balance;
+}
+
+.section-sub {
+  margin-top: 1rem;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.section-link {
+  display: inline-block;
+  margin-top: 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.section-link:hover {
+  color: var(--accent-strong);
+}
+
+/* ---- class identity: scroll-linked (consumes --p 0→1) ---- */
+
+.class-identity {
+  --p: 0;
+  position: relative;
+  overflow: clip;
+  border-block: 1px solid var(--line);
+  background: var(--surface);
+  perspective: 1400px;
+}
+
+.class-identity-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+  padding-block: 6rem;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .class-identity-inner {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 5rem;
+    text-align: left;
+    padding-block: 8rem;
+  }
+}
+
+.class-identity-logo {
+  transform: translateX(calc((1 - var(--p)) * -60vw))
+    translateZ(calc((1 - var(--p)) * -300px))
+    rotateY(calc((1 - var(--p)) * 45deg))
+    scale(calc(0.72 + var(--p) * 0.28));
+  opacity: clamp(0, calc(var(--p) * 2.2 - 0.15), 1);
+  will-change: transform, opacity;
+}
+
+.class-identity-logo-img {
+  width: clamp(11rem, 24vw, 19rem);
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 40px 90px rgb(0 0 0 / 0.5);
+}
+
+.class-identity-title {
+  transform: translateY(calc((1 - var(--p)) * 2.5rem));
+  opacity: clamp(0, calc((var(--p) - 0.18) * 2.6), 1);
+  font-size: clamp(2.6rem, 6vw, 4.6rem);
+}
+
+.class-identity-sub {
+  margin-top: 0.75rem;
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.82rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--accent);
+  transform: translateY(calc((1 - var(--p)) * 1.6rem));
+  opacity: clamp(0, calc((var(--p) - 0.3) * 2.6), 1);
+}
+
+.class-identity-copy {
+  margin-top: 1.5rem;
+  max-width: 42ch;
+  line-height: 1.7;
+  color: var(--muted);
+  transform: translateY(calc((1 - var(--p)) * 1.1rem));
+  opacity: clamp(0, calc((var(--p) - 0.42) * 2.6), 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .class-identity-logo,
+  .class-identity-title,
+  .class-identity-sub,
+  .class-identity-copy {
+    transform: none;
+    opacity: 1;
+  }
+  .class-identity-logo {
+    will-change: auto;
+  }
+}
+
+/* ---- 3D coverflow student archive ---- */
+
+.coverflow {
+  margin-top: 3.5rem;
+}
+
+.coverflow-stage {
+  --cw: 18rem;
+  --shift: 8.5rem;
+  position: relative;
+  height: calc(var(--cw) * 1.62 + 2rem);
+  perspective: 1500px;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  overflow: clip;
+  cursor: grab;
+}
+
+@media (min-width: 640px) {
+  .coverflow-stage {
+    --cw: 20rem;
+    --shift: 13rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .coverflow-stage {
+    --cw: 23rem;
+    --shift: 15.5rem;
+  }
+}
+
+.coverflow-stage:active {
+  cursor: grabbing;
+}
+
+.coverflow-stage:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 6px;
+}
+
+.coverflow-card {
+  position: absolute;
+  left: 50%;
+  top: 1rem;
+  width: var(--cw);
+  margin-left: calc(var(--cw) / -2);
+  transform-style: preserve-3d;
+  transform: translateX(calc(var(--o) * var(--shift)))
+    translateZ(calc(var(--d) * -14rem))
+    rotateY(calc(var(--o) * -30deg))
+    scale(calc(1 - var(--d) * 0.13));
+  filter: brightness(calc(1 - var(--d) * 0.32));
+  background: var(--surface-raised);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.55rem 0.55rem 0.9rem;
+  transition: transform 640ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 420ms ease;
+  will-change: transform;
+}
+
+.coverflow-card.is-active {
+  border-color: var(--muted);
+  box-shadow: 0 30px 80px rgb(0 0 0 / 0.5);
+}
+
+.coverflow-card-hit {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.coverflow-card-hit:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.coverflow-card-photo {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.coverflow-card-photo img {
+  object-fit: cover;
+}
+
+.coverflow-card-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgb(16 16 19 / 0.78), transparent 42%);
+}
+
+.coverflow-card-mark {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: 0.78rem;
+  color: var(--accent);
+  background: rgb(16 16 19 / 0.85);
+  padding: 0.22rem 0.48rem;
+  line-height: 1;
+}
+
+.coverflow-placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  gap: 0.5rem;
+  background: linear-gradient(160deg, rgb(228 179 74 / 0.08), transparent 55%),
+    var(--surface);
+}
+
+.coverflow-placeholder-no {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: 3rem;
+  color: var(--line);
+}
+
+.coverflow-placeholder-label {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.coverflow-card-body {
+  display: block;
+  padding: 0.85rem 0.4rem 0;
+}
+
+.coverflow-card-name {
+  display: block;
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: 1.25rem;
+  line-height: 1.15;
+}
+
+.coverflow-card-role {
+  display: block;
+  margin-top: 0.3rem;
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.coverflow-card-absen {
+  display: block;
+  margin-top: 0.15rem;
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+
+.coverflow-card-cta {
+  position: absolute;
+  bottom: -1.4rem;
+  left: 50%;
+  translate: -50% 0;
+  white-space: nowrap;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.coverflow-card-cta:hover {
+  color: var(--accent-strong);
+}
+
+.coverflow-caption {
+  margin-top: 3.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.coverflow-caption-count {
+  font-size: 0.95rem;
+  color: var(--foreground);
+}
+
+.coverflow-controls {
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+}
+
+.coverflow-arrow {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 9999px;
+  border: 1px solid var(--line);
+  color: var(--foreground);
+  background: transparent;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 180ms ease, color 180ms ease;
+}
+
+.coverflow-arrow:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.coverflow-scrub {
+  width: min(16rem, 50vw);
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .coverflow-card {
+    transition: none;
+    transform: translateX(calc(var(--o) * var(--shift)));
+  }
+  .coverflow-stage {
+    cursor: default;
+  }
+}
+
+/* ---- student archive intro ---- */
+
+.archive-intro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.archive-intro-count {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.85rem;
+  color: var(--accent);
+}
+
+/* ---- gallery preview: asymmetric editorial ---- */
+
+.gallery-preview {
+  margin-top: 3rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .gallery-preview {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+.gallery-frame {
+  position: relative;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  border: 1px solid var(--line);
+  background: linear-gradient(160deg, rgb(228 179 74 / 0.06), transparent 60%),
+    var(--surface);
+  gap: 0.4rem;
+  padding: 1rem;
+}
+
+.gallery-frame figcaption {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: 1.05rem;
+  color: var(--muted);
+}
+
+.gallery-frame-tag {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--line);
+}
+
+/* ---- schedule preview ---- */
+
+.schedule-preview {
+  margin-top: 3rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+@media (min-width: 768px) {
+  .schedule-preview {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.schedule-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1.75rem 1rem;
+  background: var(--background);
+}
+
+.schedule-day-name {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--foreground);
+}
+
+.schedule-day-mark {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: 1.5rem;
+  color: var(--line);
+}
+
+/* ---- about preview ---- */
+
+.about-preview {
+  display: grid;
+  gap: 3rem;
+}
+
+@media (min-width: 900px) {
+  .about-preview {
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 5rem;
+  }
+}
+
+.about-facts {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--line);
+}
+
+.about-facts > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding-block: 0.95rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.about-facts dt {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.about-facts dd {
+  font-weight: 600;
+  text-align: right;
+}
+
+/* ---- final CTA ---- */
+
+.final-cta {
+  border-top: 1px solid var(--line);
+  padding-block: 7rem;
+  text-align: center;
+}
+
+.final-cta-count {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: clamp(5rem, 18vw, 12rem);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgb(228 179 74 / 0.6);
+}
+
+.final-cta-title {
+  margin-top: 1rem;
+  font-size: clamp(1.8rem, 4.5vw, 3rem);
+  text-wrap: balance;
+}
+
+.final-cta .hero-cta {
+  justify-content: center;
+}
+
+/* ---- legacy: archive rows (students page) ---- */
 
 .archive-row {
   display: grid;
@@ -220,324 +905,4 @@ button:focus-visible {
   font-size: 1.05rem;
   color: var(--muted);
   font-variant-numeric: tabular-nums;
-}
-
-/* ---- 3D coverflow student showcase ---- */
-
-.coverflow {
-  margin-top: 3.5rem;
-}
-
-.coverflow-stage {
-  position: relative;
-  height: calc(var(--cw) * 1.5 + 2rem);
-  perspective: 1400px;
-  touch-action: pan-y;
-  user-select: none;
-  -webkit-user-select: none;
-  overflow: clip;
-  cursor: grab;
-}
-
-.coverflow-stage:active {
-  cursor: grabbing;
-}
-
-.coverflow-stage:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 6px;
-}
-
-/* Per spec §9: smaller shift on mobile keeps neighbor cards tight around the active card. */
-.coverflow-stage {
-  --cw: 15rem;
-  --shift: 9.5rem;
-}
-
-@media (min-width: 640px) {
-  .coverflow-stage {
-    --cw: 17rem;
-    --shift: 12rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .coverflow-stage {
-    --cw: 20rem;
-    --shift: 14.5rem;
-  }
-}
-
-.coverflow-card {
-  position: absolute;
-  left: 50%;
-  top: 1rem;
-  width: var(--cw);
-  margin-left: calc(var(--cw) / -2);
-  transform-style: preserve-3d;
-  transform: translateX(calc(var(--o) * var(--shift)))
-    translateZ(calc(var(--d) * -13rem))
-    rotateY(calc(var(--o) * -32deg))
-    scale(calc(1 - var(--d) * 0.14));
-  filter: brightness(calc(1 - var(--d) * 0.3));
-  background: var(--surface-raised);
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  padding: 0.6rem 0.6rem 1rem;
-  text-align: left;
-  cursor: pointer;
-  transition: transform 620ms cubic-bezier(0.22, 1, 0.36, 1),
-    filter 420ms ease, opacity 380ms ease;
-  transition-delay: 40ms;
-}
-
-.coverflow-card.is-active {
-  border-color: var(--muted);
-  box-shadow: 0 24px 60px rgb(0 0 0 / 0.45);
-  transition-delay: 0ms;
-}
-
-.coverflow-card:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-}
-
-.coverflow-card-photo {
-  position: relative;
-  display: block;
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
-  background: var(--surface);
-}
-
-.coverflow-card-photo img {
-  object-fit: cover;
-}
-
-.coverflow-card-mark {
-  position: absolute;
-  top: 0.6rem;
-  left: 0.6rem;
-  font-family: var(--font-fraunces), Georgia, serif;
-  font-size: 0.8rem;
-  color: var(--accent);
-  background: rgb(16 16 19 / 0.82);
-  padding: 0.2rem 0.45rem;
-  line-height: 1;
-}
-
-.coverflow-placeholder {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-content: center;
-  text-align: center;
-  gap: 0.4rem;
-  background: linear-gradient(160deg, rgb(228 179 74 / 0.07), transparent 55%),
-    var(--surface);
-}
-
-.coverflow-placeholder-no {
-  font-family: var(--font-fraunces), Georgia, serif;
-  font-size: 2.6rem;
-  color: var(--line);
-}
-
-.coverflow-placeholder-label {
-  font-size: 0.62rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.coverflow-card-name {
-  display: block;
-  margin-top: 0.8rem;
-  font-family: var(--font-fraunces), Georgia, serif;
-  font-size: 1.15rem;
-  line-height: 1.15;
-  color: var(--foreground);
-}
-
-.coverflow-card-meta {
-  display: block;
-  margin-top: 0.25rem;
-  font-size: 0.68rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.coverflow-caption {
-  margin-top: 2rem;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.coverflow-caption-name {
-  font-family: var(--font-fraunces), Georgia, serif;
-  font-size: 1.5rem;
-}
-
-.coverflow-caption-meta {
-  margin-top: 0.2rem;
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.coverflow-caption-note {
-  margin-top: 0.6rem;
-  max-width: 42ch;
-  font-size: 0.85rem;
-  color: var(--muted);
-}
-
-.coverflow-caption-cta {
-  flex-shrink: 0;
-}
-
-.coverflow-controls {
-  margin-top: 1.75rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.25rem;
-}
-
-.coverflow-arrow {
-  width: 2.75rem;
-  height: 2.75rem;
-  border-radius: 9999px;
-  border: 1px solid var(--line);
-  color: var(--foreground);
-  background: transparent;
-  font-size: 1rem;
-  line-height: 1;
-  cursor: pointer;
-  transition: border-color 180ms ease, background-color 180ms ease;
-}
-
-.coverflow-arrow:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
-.coverflow-dots {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.4rem;
-  max-width: 24rem;
-}
-
-.coverflow-dot {
-  width: 0.45rem;
-  height: 0.45rem;
-  border-radius: 9999px;
-  border: none;
-  padding: 0;
-  background: var(--line);
-  cursor: pointer;
-  transition: background-color 240ms ease, transform 240ms ease;
-}
-
-.coverflow-dot.is-active {
-  background: var(--accent);
-  transform: scale(1.35);
-}
-
-.coverflow-dot:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-/* ---- scroll-triggered class identity ---- */
-
-.class-identity {
-  border-block: 1px solid var(--line);
-  background: var(--surface);
-  perspective: 1200px;
-}
-
-.class-identity-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-  padding-block: 4.5rem;
-  text-align: center;
-}
-
-@media (min-width: 768px) {
-  .class-identity-inner {
-    flex-direction: row;
-    justify-content: center;
-    text-align: left;
-    gap: 4rem;
-  }
-}
-
-.class-identity-logo {
-  transform: translateX(-6rem) translateZ(-80px) rotateY(28deg);
-  opacity: 0;
-  transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 700ms ease;
-}
-
-.class-identity-logo-img {
-  border: 1px solid var(--line);
-  border-radius: 6px;
-}
-
-.class-identity-text {
-  opacity: 0;
-  transform: translateY(1.25rem);
-  transition: transform 800ms cubic-bezier(0.22, 1, 0.36, 1) 220ms,
-    opacity 800ms ease 220ms;
-}
-
-.class-identity.is-visible .class-identity-logo {
-  transform: translateX(0) translateZ(0) rotateY(0deg);
-  opacity: 1;
-}
-
-.class-identity.is-visible .class-identity-text {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.class-identity-sub {
-  margin-top: 0.5rem;
-  font-size: 0.8rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
-.class-identity-copy {
-  margin-top: 1.25rem;
-  max-width: 44ch;
-  color: var(--muted);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .coverflow-card,
-  .class-identity-logo,
-  .class-identity-text {
-    transition: none;
-  }
-  .class-identity-logo,
-  .class-identity-text {
-    opacity: 1;
-    transform: none;
-  }
-  .coverflow-stage {
-    cursor: default;
-  }
 }
