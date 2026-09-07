@@ -13,11 +13,15 @@ export interface GalleryItem {
 }
 
 export const GALLERY_ITEMS: GalleryItem[] = [
-  { title: "Hadiah atau bingkisan dari Sir Yo", alt: "Foto hadiah atau bingkisan dari Sir Yo", src: "/images/gallery/foto-hadiah-bingkisan-sir-yo.webp" },
+  { title: "Dispenser untuk sir yo!", alt: "Foto hadiah dispenser buat Sir Yo", src: "/images/gallery/foto-hadiah-bingkisan-sir-yo.webp" },
   { title: "Rapat kelas", alt: "Foto momen rapat kelas 7E" },
-  { title: "Foto bersama", alt: "Foto bersama seluruh kelas 7E" },
+  { title: "LDKS di brigif 1", alt: "LDKS Rabu 3 september 2026 7E", src: "/images/gallery/ldks-rabu-03-sept-2026-7e.webp" },
   { title: "Belajar kelompok", alt: "Foto belajar kelompok siswa 7E" },
   { title: "Pekan olahraga", alt: "Foto kelas 7E di pekan olahraga" },
   { title: "Praktikum", alt: "Foto praktikum kelas 7E" },
   { title: "Jam istirahat", alt: "Foto jam istirahat kelas 7E" },
+  { title: "Outing class", alt: "Foto outing class 7E", src: "/images/gallery/foto-hadiah-bingkisan-sir-yo.webp" },
+  { title: "Makrab 7E", alt: "Foto malam keakraban 7E", src: "/images/gallery/foto-hadiah-bingkisan-sir-yo.webp" },
+  { title: "Lomba 17an", alt: "Foto lomba tujuh belasan", src: "/images/gallery/foto-hadiah-bingkisan-sir-yo.webp" },
+  { title: "Jalan sehat", alt: "Foto jalan sehat kelas", src: "/images/gallery/foto-hadiah-bingkisan-sir-yo.webp" }
 ];

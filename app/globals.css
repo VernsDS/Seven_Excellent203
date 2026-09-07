@@ -819,49 +819,6 @@ input:focus-visible {
   color: var(--accent);
 }
 
-/* ---- gallery preview: asymmetric editorial ---- */
-
-.gallery-preview {
-  margin-top: 3rem;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-items: start;
-  gap: 1rem;
-}
-
-@media (min-width: 768px) {
-  .gallery-preview {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1.5rem;
-  }
-}
-
-.gallery-frame {
-  position: relative;
-  display: grid;
-  place-content: center;
-  text-align: center;
-  border: 1px solid var(--line);
-  background: linear-gradient(160deg, rgb(61 182 242 / 0.10), transparent 60%),
-    var(--surface);
-  gap: 0.4rem;
-  padding: 1rem;
-}
-
-.gallery-frame figcaption {
-  font-family: var(--font-fraunces), Georgia, serif;
-  font-size: 1.05rem;
-  color: var(--muted);
-}
-
-.gallery-frame-tag {
-  font-family: var(--font-jetbrains), ui-monospace, monospace;
-  font-size: 0.58rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--line);
-}
-
 /* ---- final CTA ---- */
 
 .final-cta {
@@ -2188,7 +2145,22 @@ input:focus-visible {
   background: var(--muted-bg);
 }
 
-/* ---- gallery page: photo frames with placeholder states ---- */
+/* ---- gallery masonry: dynamic count, portrait auto-scale, no overlap ---- */
+
+.gallery-preview {
+  margin-top: 3rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: end;
+  gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .gallery-preview {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+}
 
 .gallery-frame {
   position: relative;
@@ -2214,14 +2186,9 @@ input:focus-visible {
     var(--surface);
 }
 
-.gallery-frame.is-pending.md\:mt-10,
-.gallery-frame.is-pending.md\:mt-16,
-.gallery-frame.is-pending.md\:-mt-8 {
-  margin-top: 0;
-}
-
 .gallery-frame-photo {
   object-fit: cover;
+  object-position: center;
   transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
@@ -2234,10 +2201,23 @@ input:focus-visible {
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 1.75rem 1rem 0.8rem;
-  background: linear-gradient(to top, rgb(43 38 32 / 0.72), transparent);
+  padding: 1.9rem 1rem 0.8rem;
+  background: linear-gradient(to top, rgb(43 38 32 / 0.75), transparent);
   color: #fbf7ee;
   font-family: var(--font-fraunces), Georgia, serif;
-  font-size: 0.95rem;
+  font-size: 1rem;
+  line-height: 1.3;
   z-index: 1;
+}
+
+.gallery-preview-more {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.gallery-preview-more a {
+  color: var(--accent-strong);
+  font-weight: 600;
 }

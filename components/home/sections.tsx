@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   Users,
   School,
@@ -9,16 +10,17 @@ import {
 import { CLASS_INFO, STUDENTS } from "@/lib/students";
 import { president } from "@/lib/students";
 import { CONTACT_RAFA, waLink } from "@/lib/contact";
+import { GALLERY_ITEMS } from "@/lib/gallery";
 
+/**
+ * Homepage gallery preview reads lib/gallery.ts directly, so photos and
+ * pending frames stay in sync with the /gallery page. Preview shows the
+ * newest items first, capped for the landing rhythm; the link hands off
+ * to the full gallery.
+ */
 export function GalleryPreview() {
-  const frames = [
-    { label: "Rapat kelas", ratio: "aspect-[4/3]" },
-    { label: "Foto bersama", ratio: "aspect-[3/4] md:mt-10" },
-    { label: "Belajar kelompok", ratio: "aspect-square" },
-    { label: "Pekan olahraga", ratio: "aspect-[4/3] md:mt-16" },
-    { label: "Praktikum", ratio: "aspect-[3/4]" },
-    { label: "Jam istirahat", ratio: "aspect-square md:-mt-8" },
-  ];
+  const preview = GALLERY_ITEMS.slice(-6).reverse();
+  const total = GALLERY_ITEMS.length;
 
   return (
     <section className="home-section home-section--sun" aria-label="Gallery preview">
@@ -26,26 +28,50 @@ export function GalleryPreview() {
         <div className="section-head">
           <h2 className="display section-title">Kenangan yang menunggu.</h2>
           <p className="section-sub">
-            Galeri 7E dibuka hanya dengan foto kelas yang sah, bukan foto
-            stok, bukan ingatan palsu. Setiap bingkai menunggu giliran aslinya.
+            {total === 0
+              ? "Galeri 7E dibuka hanya dengan foto kelas yang sah, bukan foto stok, bukan ingatan palsu. Setiap bingkai menunggu giliran aslinya."
+              : `${total} kenangan sudah masuk arsip 7E — bukan foto stok, bukan ingatan palsu. Buka galeri untuk lihat semuanya.`}
           </p>
           <Link href="/gallery" className="section-link">
             Lihat galeri →
           </Link>
         </div>
         <div className="gallery-preview">
-          {frames.map((f) => (
+          {preview.map((item) => (
             <figure
-              key={f.label}
-              className={`gallery-frame card ${f.ratio}`}
+              key={item.title}
+              className={`gallery-frame card ${item.src ? "has-photo" : "is-pending"}`}
             >
-              <figcaption>{f.label}</figcaption>
-              <span className="gallery-frame-tag" aria-hidden="true">
-                Asset pending
-              </span>
+              {item.src ? (
+                <>
+                  <Image
+                    src={item.src}
+                    alt={item.alt}
+                    fill
+                    sizes="(max-width: 768px) 50vw, 33vw"
+                    className="gallery-frame-photo"
+                  />
+                  <figcaption className="gallery-frame-caption">
+                    {item.title}
+                  </figcaption>
+                </>
+              ) : (
+                <>
+                  <figcaption>{item.title}</figcaption>
+                  <span className="gallery-frame-tag" aria-hidden="true">
+                    Menunggu foto
+                  </span>
+                </>
+              )}
             </figure>
           ))}
         </div>
+        {total > 6 && (
+          <p className="gallery-preview-more">
+            +{total - 6} kenangan lainnya di{" "}
+            <Link href="/gallery">galeri lengkap</Link>.
+          </p>
+        )}
       </div>
     </section>
   );
