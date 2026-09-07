@@ -13,6 +13,7 @@ export interface GalleryItem {
 }
 
 export const GALLERY_ITEMS: GalleryItem[] = [
+  { title: "Hadiah atau bingkisan dari Sir Yo", alt: "Foto hadiah atau bingkisan dari Sir Yo", src: "/images/gallery/foto-hadiah-bingkisan-sir-yo.webp" },
   { title: "Rapat kelas", alt: "Foto momen rapat kelas 7E" },
   { title: "Foto bersama", alt: "Foto bersama seluruh kelas 7E" },
   { title: "Belajar kelompok", alt: "Foto belajar kelompok siswa 7E" },
