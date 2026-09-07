@@ -20,8 +20,8 @@ export const GALLERY_ITEMS: GalleryItem[] = [
   { title: "Pekan olahraga", alt: "Foto kelas 7E di pekan olahraga" },
   { title: "Praktikum", alt: "Foto praktikum kelas 7E" },
   { title: "Jam istirahat", alt: "Foto jam istirahat kelas 7E" },
-  { title: "Outing class", alt: "Foto outing class 7E", src: "/images/gallery/foto-hadiah-bingkisan-sir-yo.webp" },
-  { title: "Makrab 7E", alt: "Foto malam keakraban 7E", src: "/images/gallery/foto-hadiah-bingkisan-sir-yo.webp" },
-  { title: "Lomba 17an", alt: "Foto lomba tujuh belasan", src: "/images/gallery/foto-hadiah-bingkisan-sir-yo.webp" },
-  { title: "Jalan sehat", alt: "Foto jalan sehat kelas", src: "/images/gallery/foto-hadiah-bingkisan-sir-yo.webp" }
+  { title: "Outing class", alt: "Foto outing class 7E" },
+  { title: "Makrab 7E", alt: "Foto malam keakraban 7E" },
+  { title: "Lomba 17an", alt: "Foto lomba tujuh belasan" },
+  { title: "Jalan sehat", alt: "Foto jalan sehat kelas" }
 ];
