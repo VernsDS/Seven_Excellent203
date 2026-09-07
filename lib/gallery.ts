@@ -25,3 +25,13 @@ export const GALLERY_ITEMS: GalleryItem[] = [
   { title: "Lomba 17an", alt: "Foto lomba tujuh belasan" },
   { title: "Jalan sehat", alt: "Foto jalan sehat kelas" }
 ];
+
+/**
+ * Foto dulu, placeholder di belakang — dipakai home & /gallery.
+ * Di dalam masing-masing kelompok, urutan data (terbaru di atas) tetap.
+ */
+export function galleryPhotosFirst(): GalleryItem[] {
+  const photos = GALLERY_ITEMS.filter((i) => i.src);
+  const pending = GALLERY_ITEMS.filter((i) => !i.src);
+  return [...photos, ...pending];
+}

@@ -1,30 +1,48 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect, useRef } from "react";
 import { waLink } from "@/lib/contact";
 import { StudentAvatar } from "@/components/ui/avatar";
 import type { Student } from "@/lib/students";
 
 /**
  * Student photo stream: a continuously moving wall of 7E portraits in a
- * perspective corridor. Two mirrored rails travel in opposite directions
- * via CSS keyframes on the rail element only (transform, GPU-friendly);
- * negative delays pre-populate the stream so it is already in motion on
- * first paint. All content comes from the students prop. No photo =
- * designed archive placeholder, never a substitute face.
+ * perspective corridor. Performance gates: animation runs only while the
+ * corridor is on screen (IntersectionObserver toggles play state), rails
+ * hold a single copy on mobile (no seamless-loop duplicate), and the 3D
+ * drift is disabled below 768px. All content comes from the students
+ * prop; no photo = designed placeholder, never a substitute face.
  */
 export function ImageStreamHero({ students }: { students: Student[] }) {
+  const corridorRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = corridorRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        el.classList.toggle("is-paused", !entry.isIntersecting);
+      },
+      { rootMargin: "10% 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   const half = Math.ceil(students.length / 2);
   const railA = students.slice(0, half);
   const railB = students.slice(half);
 
   return (
     <section className="stream" aria-label="Dinding potret siswa 7E">
-      <div className="stream-corridor">
+      <div ref={corridorRef} className="stream-corridor">
         <div className="stream-rail stream-rail--a">
           <div className="stream-track">
             {railA.map((s) => (
               <StreamCard key={`a-${s.id}`} student={s} />
             ))}
-            <div className="stream-copy" aria-hidden="true">
+            <div className="stream-copy stream-copy--desktop" aria-hidden="true">
               {railA.map((s) => (
                 <StreamCard key={`a2-${s.id}`} student={s} />
               ))}
@@ -36,7 +54,7 @@ export function ImageStreamHero({ students }: { students: Student[] }) {
             {railB.map((s) => (
               <StreamCard key={`b-${s.id}`} student={s} />
             ))}
-            <div className="stream-copy" aria-hidden="true">
+            <div className="stream-copy stream-copy--desktop" aria-hidden="true">
               {railB.map((s) => (
                 <StreamCard key={`b2-${s.id}`} student={s} />
               ))}

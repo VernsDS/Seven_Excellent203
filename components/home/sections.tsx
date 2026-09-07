@@ -10,7 +10,7 @@ import {
 import { CLASS_INFO, STUDENTS } from "@/lib/students";
 import { president } from "@/lib/students";
 import { CONTACT_RAFA, waLink } from "@/lib/contact";
-import { GALLERY_ITEMS } from "@/lib/gallery";
+import { galleryPhotosFirst, GALLERY_ITEMS } from "@/lib/gallery";
 
 /**
  * Homepage gallery preview reads lib/gallery.ts directly, so photos and
@@ -19,8 +19,10 @@ import { GALLERY_ITEMS } from "@/lib/gallery";
  * to the full gallery.
  */
 export function GalleryPreview() {
-  const preview = GALLERY_ITEMS.slice(-6).reverse();
+  const ordered = galleryPhotosFirst();
+  const preview = ordered.slice(0, 6);
   const total = GALLERY_ITEMS.length;
+  const photoCount = ordered.filter((i) => i.src).length;
 
   return (
     <section className="home-section home-section--sun" aria-label="Gallery preview">
@@ -28,9 +30,9 @@ export function GalleryPreview() {
         <div className="section-head">
           <h2 className="display section-title">Kenangan yang menunggu.</h2>
           <p className="section-sub">
-            {total === 0
+            {photoCount === 0
               ? "Galeri 7E dibuka hanya dengan foto kelas yang sah, bukan foto stok, bukan ingatan palsu. Setiap bingkai menunggu giliran aslinya."
-              : `${total} kenangan sudah masuk arsip 7E — bukan foto stok, bukan ingatan palsu. Buka galeri untuk lihat semuanya.`}
+              : `${photoCount} foto asli sudah masuk arsip 7E — bukan foto stok, bukan ingatan palsu. Buka galeri untuk lihat semuanya.`}
           </p>
           <Link href="/gallery" className="section-link">
             Lihat galeri →
@@ -174,34 +176,6 @@ export function AboutPreview() {
           </a>
           .
         </p>
-      </div>
-    </section>
-  );
-}
-
-export function FinalCta() {
-  return (
-    <section className="final-cta" aria-label="Final call to action">
-      <div className="container-page final-cta-inner">
-        <p className="final-cta-count display">
-          {STUDENTS.length.toString().padStart(2, "0")}
-        </p>
-        <h2 className="display final-cta-title">
-          Satu kelas. Tiga puluh enam nama. Satu arsip.
-        </h2>
-        <div className="hero-cta">
-          <Link href="/students" className="btn btn-primary">
-            Buka arsip kelas
-          </Link>
-          <a
-            href={waLink()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-ghost"
-          >
-            {CONTACT_RAFA.label}
-          </a>
-        </div>
       </div>
     </section>
   );

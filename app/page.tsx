@@ -5,7 +5,6 @@ import { StudentCoverflow } from "@/components/ui/3-d-coverflow-carousel";
 import { Hero } from "@/components/home/hero";
 import {
   AboutPreview,
-  FinalCta,
   GalleryPreview,
   SchedulePreview,
 } from "@/components/home/sections";
@@ -50,7 +49,6 @@ export default function HomePage() {
       <GalleryPreview />
       <SchedulePreview />
       <AboutPreview />
-      <FinalCta />
     </>
   );
 }

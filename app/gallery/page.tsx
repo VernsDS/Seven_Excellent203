@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { GALLERY_ITEMS } from "@/lib/gallery";
+import { galleryPhotosFirst } from "@/lib/gallery";
 
 export const metadata: Metadata = {
   title: "Gallery",
@@ -25,7 +25,7 @@ export default function GalleryPage() {
       </p>
 
       <div className="gallery-preview mt-12">
-        {GALLERY_ITEMS.map((item) => (
+        {galleryPhotosFirst().map((item) => (
           <figure
             key={item.title}
             className={`gallery-frame card ${item.src ? "has-photo" : "is-pending"}`}
