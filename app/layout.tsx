@@ -3,6 +3,7 @@ import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
 import { SiteNav } from "@/components/site-nav";
 import { FloatingNav } from "@/components/floating-nav";
 import { MotionBanner } from "@/components/ui/motion-banner";
+import LoadingScreen from "@/components/ui/LoadingScreen";
 import { CinematicFooter } from "@/components/cinematic-footer";
 import { CurvedMenuProvider } from "@/components/curved-menu";
 import { CLASS_INFO } from "@/lib/students";
@@ -64,6 +65,7 @@ export default function RootLayout({
       className={`${inter.variable} ${fraunces.variable} ${jetbrains.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        <LoadingScreen />
         <noscript>
           <style>{`
             .hero-stack, .hero-7e, .hero-copy { transform: none; }
