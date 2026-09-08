@@ -12,6 +12,7 @@ import { president } from "@/lib/students";
 import { CONTACT_RAFA, waLink } from "@/lib/contact";
 import { galleryPhotosFirst, GALLERY_ITEMS } from "@/lib/gallery";
 import { WEEK_SCHEDULE } from "@/lib/schedule";
+import TodayHighlight from "@/components/sections/TodayHighlight";
 
 /**
  * Homepage gallery preview reads lib/gallery.ts directly, so photos and
@@ -94,10 +95,12 @@ export function SchedulePreview() {
             Halaman jadwal →
           </Link>
         </div>
+        <TodayHighlight />
         <div className="schedule-preview">
           {WEEK_SCHEDULE.map((d) => (
             <div
               key={d.day}
+              data-day={d.day}
               className="schedule-day card"
               style={{ background: d.tint }}
             >

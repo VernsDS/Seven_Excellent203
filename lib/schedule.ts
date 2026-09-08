@@ -63,3 +63,15 @@ export const WEEK_SCHEDULE: DaySchedule[] = [
     ],
   },
 ];
+
+const DAY_INDEX: Record<number, string> = {
+  1: "Senin",
+  2: "Selasa",
+  3: "Rabu",
+  4: "Kamis",
+  5: "Jumat",
+};
+
+export function todayName(date: Date = new Date()): string | null {
+  return DAY_INDEX[date.getDay()] ?? null;
+}

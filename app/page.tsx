@@ -1,3 +1,4 @@
+import SaranSection from "@/components/sections/SaranSection";
 import { ClassIdentity } from "@/components/ui/class-identity";
 import { HeroPinReveal } from "@/components/ui/hero-pin-reveal";
 import { ImageStreamHero } from "@/components/ui/image-stream-hero";
@@ -49,6 +50,7 @@ export default function HomePage() {
       <GalleryPreview />
       <SchedulePreview />
       <AboutPreview />
+      <SaranSection />
     </>
   );
 }

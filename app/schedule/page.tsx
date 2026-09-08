@@ -1,5 +1,6 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import { WEEK_SCHEDULE } from "@/lib/schedule";
+import TodayHighlight from "@/components/sections/TodayHighlight";
 
 export const metadata: Metadata = {
   title: "Schedule",
@@ -19,10 +20,12 @@ export default function SchedulePage() {
         dari Perpus sampai Lapangan.
       </p>
 
+      <TodayHighlight />
       <div className="schedule-preview mt-12">
         {WEEK_SCHEDULE.map((d) => (
           <div
             key={d.day}
+            data-day={d.day}
             className="schedule-day card"
             style={{ background: d.tint }}
           >
