@@ -67,3 +67,4 @@ Tunggu sampai muncul tulisan seperti `Local: http://localhost:3000` di terminal,
 ## Live Site
 
 Versi yang sudah online bisa diakses di [sevenexcellent203.web.id](https://www.sevenexcellent203.web.id/), tanpa perlu instalasi apa pun.
+website portofolio Rafa bisa kamu akses di [rafaportofolio13.com] (https://www.rafaportofolio13.com)

@@ -11,6 +11,7 @@ import { CLASS_INFO, STUDENTS } from "@/lib/students";
 import { president } from "@/lib/students";
 import { CONTACT_RAFA, waLink } from "@/lib/contact";
 import { galleryPhotosFirst, GALLERY_ITEMS } from "@/lib/gallery";
+import { WEEK_SCHEDULE } from "@/lib/schedule";
 
 /**
  * Homepage gallery preview reads lib/gallery.ts directly, so photos and
@@ -79,14 +80,6 @@ export function GalleryPreview() {
   );
 }
 
-const DAYS = [
-  { name: "Senin", tint: "var(--coral-soft)", accent: "var(--coral-deep)" },
-  { name: "Selasa", tint: "var(--sky-soft)", accent: "var(--sky-deep)" },
-  { name: "Rabu", tint: "var(--sun-soft)", accent: "#8a6d00" },
-  { name: "Kamis", tint: "var(--sky-soft)", accent: "var(--sky-deep)" },
-  { name: "Jumat", tint: "var(--coral-soft)", accent: "var(--coral-deep)" },
-] as const;
-
 export function SchedulePreview() {
   return (
     <section className="home-section" aria-label="Schedule preview">
@@ -94,27 +87,31 @@ export function SchedulePreview() {
         <div className="section-head">
           <h2 className="display section-title">Minggu 7E, jam demi jam.</h2>
           <p className="section-sub">
-            Jadwal lengkap tampil hanya setelah data asli dirilis. Sesuai
-            aturan kelas, tidak ada yang ditampilkan setengah jadi.
+            Jadwal mingguan resmi kelas 7E. Setiap mapel punya ruangnya
+            sendiri: dari Perpus sampai Lapangan.
           </p>
           <Link href="/schedule" className="section-link">
             Halaman jadwal →
           </Link>
         </div>
         <div className="schedule-preview">
-          {DAYS.map((d) => (
+          {WEEK_SCHEDULE.map((d) => (
             <div
-              key={d.name}
+              key={d.day}
               className="schedule-day card"
               style={{ background: d.tint }}
             >
               <span className="schedule-day-name" style={{ color: d.accent }}>
-                {d.name}
+                {d.day}
               </span>
-              <span className="schedule-day-mark" aria-hidden="true">
-                —
-              </span>
-              <span className="schedule-day-note">Menunggu jadwal</span>
+              <ul className="schedule-entries">
+                {d.entries.map((e) => (
+                  <li key={e.subject} className="schedule-entry">
+                    <span className="schedule-entry-subject">{e.subject}</span>
+                    <span className="schedule-entry-room">{e.room}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           ))}
         </div>

@@ -215,6 +215,18 @@ export function CinematicFooter() {
             <span className="footer-heart" aria-hidden="true">♥</span>
             <span>oleh</span>
             <strong>7E</strong>
+            <span className="footer-credit-sep">·</span>
+            <span>
+              Dibuat oleh{ }
+              <a
+                href="https://github.com/VernsDS"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-credit-link"
+              >
+                Rafardhan Athala
+              </a>
+            </span>
           </p>
           <button
             type="button"
